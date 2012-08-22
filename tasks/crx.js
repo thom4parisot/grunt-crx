@@ -8,6 +8,7 @@
 
 var crx = require('crx');
 var path = require('path');
+var fs = require('fs');
 
 /**
  * Expand the current multitask config key name
@@ -27,11 +28,12 @@ module.exports = function(grunt) {
   // ==========================================================================
 
   grunt.registerMultiTask('crx', 'Package Chrome Extensions, the simple way.', function() {
-    var manifest;
+    var manifest, extension;
     var p = buildConfigProperty.bind(this);
+    var done = this.async();
     var defaults = {
       "appid": null,
-      "buildDir": "build/",
+      //"buildDir": "build/",
       "codebase": null,
       "privateKey": "key.pem"
     };
@@ -47,26 +49,65 @@ module.exports = function(grunt) {
     if (!path.existsSync(this.data.privateKey)){
       throw grunt.task.taskError('Unable to locate your private key.');
     }
-    if (!grunt.file.readJSON( path.join(this.file.src, 'manifest.json') ).version){
-      throw grunt.task.taskError('Unable to read extension manifest.');
+
+    manifest = grunt.file.readJSON(path.join(this.file.src, 'manifest.json'));
+    if (!manifest.version || !manifest.name || !manifest.manifest_version){
+      throw grunt.task.taskError('Invalid manifest: one or more property is missing.');
     }
 
     // Preparing filesystem
     // @todo maybe use a basepath to avoid execution context problems
-    grunt.file.mkdir(this.data.buildDir);
+    //grunt.file.mkdir(this.data.buildDir);
     grunt.file.mkdir(path.dirname(this.file.dest));
 
+    // Preparing crx
+    extension = new crx({
+      "codebase": this.data.codebase || manifest.update_url || "",
+      "dest": this.file.dest,
+      "privateKey": fs.readFileSync(this.data.privateKey),
+      "rootDirectory": this.file.src
+    });
 
-    // Building crx
-
-    // Baking done!
+    // Building
+    grunt.utils.async.series([
+      // Building extension
+      function(callback){
+        grunt.helper('crx', extension, callback);
+      },
+      // Building manifest
+      function(callback){
+        if (extension.codebase !== null){
+          grunt.helper('crx-manifest', extension, callback);
+        }
+        else callback();
+      }
+    ], /* Baking done! */ done);
   });
 
   // ==========================================================================
   // HELPERS
   // ==========================================================================
 
-  grunt.registerHelper('crx', function() {
-    return 'crx!!!';
+  grunt.registerHelper('crx', function(ChromeExtension, callback) {
+    ChromeExtension.load(function(err){
+      var self = this;
+
+      if (err)  throw new grunt.task.taskError(err);
+
+      this.pack(function(err, data){
+        if (err)  throw new grunt.task.taskError(err);
+
+        grunt.file.write(self.dest, data);
+
+        self.destroy();
+        callback();
+      });
+    });
+  });
+
+  grunt.registerHelper('crx-manifest', function(ChromeExtension, callback) {
+    //@todo TBD
+
+    callback();
   });
 };
