@@ -106,7 +106,10 @@ module.exports = function(grunt) {
   });
 
   grunt.registerHelper('crx-manifest', function(ChromeExtension, callback) {
-    //@todo TBD
+    ChromeExtension.generateUpdateXML();
+    var dest = path.dirname(ChromeExtension.dest);
+
+    grunt.file.write(path.join(dest, 'updates.xml'), ChromeExtension.updateXML);
 
     callback();
   });
