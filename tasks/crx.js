@@ -6,7 +6,7 @@
  * Licensed under the MIT license.
  */
 
-var crx = require('crx');
+var ChromeExtension = require('crx');
 var path = require('path');
 var fs = require('fs');
 
@@ -61,7 +61,7 @@ module.exports = function(grunt) {
     grunt.file.mkdir(path.dirname(this.file.dest));
 
     // Preparing crx
-    extension = new crx({
+    extension = new ChromeExtension({
       "codebase": this.data.codebase || manifest.update_url || "",
       "dest": this.file.dest,
       "privateKey": fs.readFileSync(this.data.privateKey),
@@ -79,7 +79,9 @@ module.exports = function(grunt) {
         if (extension.codebase !== null){
           grunt.helper('crx-manifest', extension, callback);
         }
-        else callback();
+        else{
+          callback();
+        }
       }
     ], /* Baking done! */ done);
   });
@@ -92,10 +94,14 @@ module.exports = function(grunt) {
     ChromeExtension.load(function(err){
       var self = this;
 
-      if (err)  throw new grunt.task.taskError(err);
+      if (err){
+        throw new grunt.task.taskError(err);
+      }
 
       this.pack(function(err, data){
-        if (err)  throw new grunt.task.taskError(err);
+        if (err){
+          throw new grunt.task.taskError(err);
+        }
 
         grunt.file.write(self.dest, data);
 
