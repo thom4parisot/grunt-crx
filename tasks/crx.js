@@ -44,6 +44,9 @@ module.exports = function(grunt) {
     if (!path.existsSync(this.file.src)){
       throw grunt.task.taskError('Unable to locate source directory.');
     }
+    if (!path.existsSync(this.data.key)){
+      throw grunt.task.taskError('Unable to locate your private key.');
+    }
     if (!grunt.file.readJSON( path.join(this.file.src, 'manifest.json') ).version){
       throw grunt.task.taskError('Unable to read extension manifest.');
     }
