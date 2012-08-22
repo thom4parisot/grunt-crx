@@ -7,6 +7,7 @@
  */
 
 var crx = require('crx');
+var path = require('path');
 
 /**
  * Expand the current multitask config key name
@@ -26,6 +27,7 @@ module.exports = function(grunt) {
   // ==========================================================================
 
   grunt.registerMultiTask('crx', 'Package Chrome Extensions, the simple way.', function() {
+    var manifest;
     var p = buildConfigProperty.bind(this);
     var defaults = {
       "appid": null,
@@ -39,6 +41,18 @@ module.exports = function(grunt) {
     this.data = grunt.utils._.extend(defaults, this.data);
 
     // Checking availability
+    if (!path.existsSync(this.file.src)){
+      throw grunt.task.taskError('Unable to locate source directory.');
+    }
+    if (!grunt.file.readJSON( path.join(this.file.src, 'manifest.json') ).version){
+      throw grunt.task.taskError('Unable to read extension manifest.');
+    }
+
+    // Preparing filesystem
+    // @todo maybe use a basepath to avoid execution context problems
+    grunt.file.mkdir(this.data.buildDir);
+    grunt.file.mkdir(path.dirname(this.file.dest));
+
 
     // Building crx
 
