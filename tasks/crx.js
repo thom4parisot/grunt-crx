@@ -20,8 +20,50 @@ function buildConfigProperty(key){
   return [ this.name, this.target, key ].join('.');
 }
 
-module.exports = function(grunt) {
+/**
+ * Configures the task
+ *
+ * @this {Grunt}
+ * @param defaults
+ */
+function configure(defaults){
+  var grunt = this;
+  var self = grunt.task.current;
+  var p = buildConfigProperty.bind(self);
 
+  // Configuring stuff
+  self.requiresConfig(p('dest'), p('src'));
+  grunt.utils._.defaults(self.data, defaults);
+
+  // Checking availability
+  if (!path.existsSync(self.file.src)){
+    throw self.taskError('Unable to locate source directory.');
+  }
+  if (!path.existsSync(self.data.privateKey)){
+    throw self.taskError('Unable to locate your private key.');
+  }
+
+  self.data.manifest = grunt.file.readJSON(path.join(self.file.src, 'manifest.json'));
+  if (!self.data.manifest.version || !self.data.manifest.name || !self.data.manifest.manifest_version){
+    throw self.taskError('Invalid manifest: one or more property is missing.');
+  }
+
+  // Expanding filename
+  self.data.filename = grunt.template.process(
+    self.data.filename,
+    grunt.utils._.extend(grunt.config(), {
+      "manifest": self.data.manifest,
+      "pkg": grunt.config('pkg') || grunt.file.readJSON('package.json')
+    })
+  );
+
+  // Preparing filesystem
+  // @todo maybe use a basepath to avoid execution context problems
+  //grunt.file.mkdir(self.data.buildDir);
+  grunt.file.mkdir(path.dirname(self.file.dest));
+}
+
+module.exports = function(grunt) {
 
   // ==========================================================================
   // TASKS
@@ -101,46 +143,3 @@ module.exports = function(grunt) {
     callback();
   });
 };
-
-/**
- * Configures the task
- *
- * @this {Grunt}
- * @param defaults
- */
-function configure(defaults){
-  var grunt = this;
-  var self = grunt.task.current;
-  var p = buildConfigProperty.bind(self);
-
-  // Configuring stuff
-  self.requiresConfig(p('dest'), p('src'));
-  grunt.utils._.defaults(self.data, defaults);
-
-  // Checking availability
-  if (!path.existsSync(self.file.src)){
-    throw self.taskError('Unable to locate source directory.');
-  }
-  if (!path.existsSync(self.data.privateKey)){
-    throw self.taskError('Unable to locate your private key.');
-  }
-
-  self.data.manifest = grunt.file.readJSON(path.join(self.file.src, 'manifest.json'));
-  if (!self.data.manifest.version || !self.data.manifest.name || !self.data.manifest.manifest_version){
-    throw self.taskError('Invalid manifest: one or more property is missing.');
-  }
-
-  // Expanding filename
-  self.data.filename = grunt.template.process(
-    self.data.filename,
-    grunt.utils._.extend(grunt.config(), {
-      "manifest": self.data.manifest,
-      "pkg": grunt.config('pkg') || grunt.file.readJSON('package.json')
-    })
-  );
-
-  // Preparing filesystem
-  // @todo maybe use a basepath to avoid execution context problems
-  //grunt.file.mkdir(self.data.buildDir);
-  grunt.file.mkdir(path.dirname(self.file.dest));
-}
