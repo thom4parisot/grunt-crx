@@ -40,6 +40,12 @@ exports['crx'] = {
         "privateKey": fs.readFileSync("test/data/key.pem"),
         "rootDirectory": "test/data/src/",
         "dest": "test/data/files/test.crx"
+      },
+      "codebase": {
+        "codebase": "http://example.com/updates.xml",
+        "privateKey": fs.readFileSync("test/data/key.pem"),
+        "rootDirectory": "test/data/src/",
+        "dest": "test/data/files/test-codebase.crx"
       }
     };
 
@@ -48,19 +54,27 @@ exports['crx'] = {
   'helper-crx': {
     'without codebase': function(test){
       var config = extensionConfigs.standard;
-      test.expect(2);
+      test.expect(3);
 
       test.doesNotThrow(function(){
         grunt.helper('crx', new ChromeExtension(config), function(){
-          test.ok(grunt.file.isMatch('*.crx', config.dest));
+          test.ok(grunt.file.isMatch('test.crx', config.dest));
+          test.ok(!grunt.file.isMatch('updates.xml', config.dest));
 
           test.done();
         });
       });
     },
     'with codebase': function(test){
+      var config = extensionConfigs.codebase;
+      test.expect(2);
 
-      test.done();
+      grunt.helper('crx', new ChromeExtension(config), function(){
+        test.ok(grunt.file.isMatch('test-codebase.crx', config.dest));
+        test.ok(!grunt.file.isMatch('updates.xml', config.dest));
+
+        test.done();
+      });
     }
   },
   'helper-manifest': {
