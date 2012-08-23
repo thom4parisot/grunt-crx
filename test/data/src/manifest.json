@@ -2,5 +2,5 @@
   "manifest_version": 2,
   "name": "Sample Grunt Extension",
   "version": "13.3.7",
-  "update_url": "http://example.com/updates.xml"
+  "update_url": "http://example.com/files/updates.xml"
 }
