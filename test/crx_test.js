@@ -108,35 +108,5 @@ exports['crx'] = {
         }
       ], test.done);
     }
-  },
-  'task': {
-    'with required arguments': function(test){
-
-      test.done();
-    },
-    'with codebase': function(test){
-
-      test.done();
-    },
-    'custom App ID': function(test){
-
-      test.done();
-    },
-    'wrong private key': function(test){
-
-      test.done();
-    },
-    'invalid destination': function(test){
-
-      test.done();
-    },
-    'invalid source': function(test){
-
-      test.done();
-    },
-    'invalid source manifest': function(test){
-
-      test.done();
-    }
   }
 };
