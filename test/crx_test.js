@@ -25,10 +25,54 @@ exports['crx'] = {
     // setup here
     done();
   },
-  'helper': function(test) {
-    test.expect(1);
-    // tests here
-    test.equal(grunt.helper('crx'), 'crx!!!', 'should return the correct value.');
-    test.done();
+  'helper-crx': {
+    'without codebase': function(test){
+
+      test.done();
+    },
+    'with codebase': function(test){
+
+      test.done();
+    }
+  },
+  'helper-manifest': {
+    'without codebase': function(test){
+
+      test.done();
+    },
+    'with codebase': function(test){
+
+      test.done();
+    }
+  },
+  'task': {
+    'with required arguments': function(test){
+
+      test.done();
+    },
+    'with codebase': function(test){
+
+      test.done();
+    },
+    'custom App ID': function(test){
+
+      test.done();
+    },
+    'wrong private key': function(test){
+
+      test.done();
+    },
+    'invalid destination': function(test){
+
+      test.done();
+    },
+    'invalid source': function(test){
+
+      test.done();
+    },
+    'invalid source manifest': function(test){
+
+      test.done();
+    }
   }
 };
