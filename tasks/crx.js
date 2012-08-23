@@ -74,9 +74,11 @@ module.exports = function(grunt) {
     var done = this.async();
     var defaults = {
       "appid": null,
-      //"buildDir": "build/",
-      "codebase": null,
+      "baseURL": null,
       "filename": "<%= pkg.name %>-<%= manifest.version %>.crx",
+      "options": {
+        "maxBuffer": undefined
+      },
       "privateKey": "key.pem"
     };
 
@@ -85,8 +87,9 @@ module.exports = function(grunt) {
 
     // Preparing crx
     extension = new ChromeExtension({
-      "codebase": this.data.codebase || this.data.manifest.update_url || "",
+      "codebase": this.data.baseURL ? this.data.baseURL + this.data.filename : '',
       "dest": path.join(this.file.dest, this.data.filename),
+      "maxBuffer": this.data.options.maxBuffer,
       "privateKey": fs.readFileSync(this.data.privateKey),
       "rootDirectory": this.file.src
     });
@@ -99,12 +102,7 @@ module.exports = function(grunt) {
       },
       // Building manifest
       function(callback){
-        if (extension.codebase !== null){
-          grunt.helper('crx-manifest', extension, callback);
-        }
-        else{
-          callback();
-        }
+        grunt.helper('crx-manifest', extension, callback);
       }
     ], /* Baking done! */ done);
   });
@@ -135,10 +133,14 @@ module.exports = function(grunt) {
   });
 
   grunt.registerHelper('crx-manifest', function(ChromeExtension, callback) {
+    if (!ChromeExtension.manifest.update_url){
+      return callback();
+    }
+
     ChromeExtension.generateUpdateXML();
     var dest = path.dirname(ChromeExtension.dest);
 
-    grunt.file.write(path.join(dest, 'updates.xml'), ChromeExtension.updateXML);
+    grunt.file.write(path.join(dest, path.basename(ChromeExtension.manifest.update_url)), ChromeExtension.updateXML);
 
     callback();
   });
