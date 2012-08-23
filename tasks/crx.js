@@ -29,7 +29,6 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('crx', 'Package Chrome Extensions, the simple way.', function() {
     var manifest, extension;
-    var p = buildConfigProperty.bind(this);
     var done = this.async();
     var defaults = {
       "appid": null,
@@ -38,31 +37,12 @@ module.exports = function(grunt) {
       "privateKey": "key.pem"
     };
 
-    // Configuring stuff
-    this.requiresConfig(p('dest'), p('src'));
-    this.data = grunt.utils._.extend(defaults, this.data);
-
-    // Checking availability
-    if (!path.existsSync(this.file.src)){
-      throw grunt.task.taskError('Unable to locate source directory.');
-    }
-    if (!path.existsSync(this.data.privateKey)){
-      throw grunt.task.taskError('Unable to locate your private key.');
-    }
-
-    manifest = grunt.file.readJSON(path.join(this.file.src, 'manifest.json'));
-    if (!manifest.version || !manifest.name || !manifest.manifest_version){
-      throw grunt.task.taskError('Invalid manifest: one or more property is missing.');
-    }
-
-    // Preparing filesystem
-    // @todo maybe use a basepath to avoid execution context problems
-    //grunt.file.mkdir(this.data.buildDir);
-    grunt.file.mkdir(path.dirname(this.file.dest));
+    // Check & Configure
+    configure.bind(grunt)(defaults);
 
     // Preparing crx
     extension = new ChromeExtension({
-      "codebase": this.data.codebase || manifest.update_url || "",
+      "codebase": this.data.codebase || this.data.manifest.update_url || "",
       "dest": this.file.dest,
       "privateKey": fs.readFileSync(this.data.privateKey),
       "rootDirectory": this.file.src
@@ -120,3 +100,37 @@ module.exports = function(grunt) {
     callback();
   });
 };
+
+/**
+ * Configures the task
+ *
+ * @this {Grunt}
+ * @param defaults
+ */
+function configure(defaults){
+  var grunt = this;
+  var self = grunt.task.current;
+  var p = buildConfigProperty.bind(self);
+
+  // Configuring stuff
+  self.requiresConfig(p('dest'), p('src'));
+  self.data = grunt.utils._.extend(defaults, self.data);
+
+  // Checking availability
+  if (!path.existsSync(self.file.src)){
+    throw self.taskError('Unable to locate source directory.');
+  }
+  if (!path.existsSync(self.data.privateKey)){
+    throw self.taskError('Unable to locate your private key.');
+  }
+
+  self.data.manifest = grunt.file.readJSON(path.join(self.file.src, 'manifest.json'));
+  if (!self.data.manifest.version || !self.data.manifest.name || !self.data.manifest.manifest_version){
+    throw self.taskError('Invalid manifest: one or more property is missing.');
+  }
+
+  // Preparing filesystem
+  // @todo maybe use a basepath to avoid execution context problems
+  //grunt.file.mkdir(self.data.buildDir);
+  grunt.file.mkdir(path.dirname(self.file.dest));
+}
