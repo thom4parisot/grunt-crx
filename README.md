@@ -1,5 +1,7 @@
 # grunt-crx
 
+[![Build Status](https://secure.travis-ci.org/oncletom/grunt-crx.png?branch=master)](http://travis-ci.org/oncletom/grunt-crx)
+
 Package your Chrome Extensions in a bliss.
 
 ## Getting Started
@@ -24,5 +26,5 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 _(Nothing yet)_
 
 ## License
-Copyright (c) 2012 oncletom  
+Copyright (c) 2012 oncletom
 Licensed under the MIT license.
