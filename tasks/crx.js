@@ -34,6 +34,7 @@ module.exports = function(grunt) {
       "appid": null,
       //"buildDir": "build/",
       "codebase": null,
+      "filename": "<%= pkg.name %>-<%= manifest.version %>.crx",
       "privateKey": "key.pem"
     };
 
@@ -43,7 +44,7 @@ module.exports = function(grunt) {
     // Preparing crx
     extension = new ChromeExtension({
       "codebase": this.data.codebase || this.data.manifest.update_url || "",
-      "dest": this.file.dest,
+      "dest": path.join(this.file.dest, this.data.filename),
       "privateKey": fs.readFileSync(this.data.privateKey),
       "rootDirectory": this.file.src
     });
@@ -128,6 +129,15 @@ function configure(defaults){
   if (!self.data.manifest.version || !self.data.manifest.name || !self.data.manifest.manifest_version){
     throw self.taskError('Invalid manifest: one or more property is missing.');
   }
+
+  // Expanding filename
+  self.data.filename = grunt.template.process(
+    self.data.filename,
+    grunt.utils._.extend(grunt.config(), {
+      "manifest": self.data.manifest,
+      "pkg": grunt.config('pkg') || grunt.file.readJSON('package.json')
+    })
+  );
 
   // Preparing filesystem
   // @todo maybe use a basepath to avoid execution context problems
