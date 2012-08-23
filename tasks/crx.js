@@ -115,7 +115,7 @@ function configure(defaults){
 
   // Configuring stuff
   self.requiresConfig(p('dest'), p('src'));
-  self.data = grunt.utils._.extend(defaults, self.data);
+  grunt.utils._.defaults(self.data, defaults);
 
   // Checking availability
   if (!path.existsSync(self.file.src)){
