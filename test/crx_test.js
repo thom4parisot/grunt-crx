@@ -54,12 +54,13 @@ exports['crx'] = {
   'helper-crx': {
     'without codebase': function(test){
       var config = extensionConfigs.standard;
-      test.expect(3);
+      test.expect(4);
 
       test.doesNotThrow(function(){
         grunt.helper('crx', new ChromeExtension(config), function(){
-          test.ok(grunt.file.isMatch('test.crx', config.dest));
-          test.ok(!grunt.file.isMatch('updates.xml', config.dest));
+          test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 1);
+          test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 0);
+          test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 0);
 
           test.done();
         });
@@ -67,24 +68,65 @@ exports['crx'] = {
     },
     'with codebase': function(test){
       var config = extensionConfigs.codebase;
-      test.expect(2);
+      test.expect(3);
 
       grunt.helper('crx', new ChromeExtension(config), function(){
-        test.ok(grunt.file.isMatch('test-codebase.crx', config.dest));
-        test.ok(!grunt.file.isMatch('updates.xml', config.dest));
+        test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 0);
+        test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 1);
+        test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 0);
 
         test.done();
       });
     }
   },
   'helper-manifest': {
-    'without codebase': function(test){
+    'without running crx-helper': function(test){
+      var config = extensionConfigs.codebase;
+      test.expect(1);
+
+      test.throws(function(){
+        grunt.helper('crx-manifest', new ChromeExtension(config));
+      });
 
       test.done();
     },
-    'with codebase': function(test){
+    'without codebase': function(test){
+      var config = extensionConfigs.standard;
+      var crx = new ChromeExtension(config);
+      test.expect(1);
 
-      test.done();
+      grunt.utils.async.series([
+        function(done){
+          grunt.helper('crx', crx, done);
+        },
+        function(done){
+          test.throws(function(){
+            grunt.helper('crx-manifest', crx);
+          });
+
+          done();
+        }
+      ], test.done);
+    },
+    'with codebase': function(test){
+      var config = extensionConfigs.codebase;
+      var crx = new ChromeExtension(config);
+      test.expect(3);
+
+      grunt.utils.async.series([
+        function(done){
+          grunt.helper('crx', crx, done);
+        },
+        function(done){
+          grunt.helper('crx-manifest', crx, function(){
+
+            test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 0);
+            test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 1);
+            test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 1);
+            done();
+          });
+        }
+      ], test.done);
     }
   },
   'task': {
