@@ -1,4 +1,9 @@
 var grunt = require('grunt');
+var ChromeExtension = require('crx');
+var path = require('path');
+var fs = require('fs');
+var exec = require('child_process').exec;
+var taskConfigs, extensionConfigs;
 
 /*
   ======== A Handy Little Nodeunit Reference ========
@@ -22,13 +27,36 @@ var grunt = require('grunt');
 
 exports['crx'] = {
   setUp: function(done) {
-    // setup here
-    done();
+    taskConfigs = {
+      "standard": {
+        "privateKey": "test/data/key.pem",
+        "src": "test/data/src/",
+        "dest": "test/data/files/"
+      }
+    };
+
+    extensionConfigs = {
+      "standard": {
+        "privateKey": fs.readFileSync("test/data/key.pem"),
+        "rootDirectory": "test/data/src/",
+        "dest": "test/data/files/test.crx"
+      }
+    };
+
+    exec('rm -f test/data/files/*', done);
   },
   'helper-crx': {
     'without codebase': function(test){
+      var config = extensionConfigs.standard;
+      test.expect(2);
 
-      test.done();
+      test.doesNotThrow(function(){
+        grunt.helper('crx', new ChromeExtension(config), function(){
+          test.ok(grunt.file.isMatch('*.crx', config.dest));
+
+          test.done();
+        });
+      });
     },
     'with codebase': function(test){
 
