@@ -133,7 +133,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerHelper('crx-manifest', function(ChromeExtension, callback) {
-    if (!ChromeExtension.manifest.update_url){
+    if (!ChromeExtension.manifest.update_url || !ChromeExtension.codebase){
       return callback();
     }
 
