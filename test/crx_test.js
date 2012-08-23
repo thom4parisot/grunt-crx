@@ -22,7 +22,7 @@ exports['crx'] = {
         "dest": "test/data/files/test.crx"
       },
       "codebase": {
-        "codebase": "http://example.com/updates.xml",
+        "codebase": "http://example.com/files/test-codebase.crx",
         "privateKey": fs.readFileSync("test/data/key.pem"),
         "rootDirectory": "test/data/src/",
         "dest": "test/data/files/test-codebase.crx"
