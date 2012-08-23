@@ -37,6 +37,11 @@
     "grunt": "~0.3.9"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "crx",
+    "chromium", "chrome", "chromeos", "extension",
+    "grunt",
+    "package",
+    "app", "hosted app", "packaged app"
   ]
 }

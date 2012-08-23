@@ -73,7 +73,10 @@ Otherwise [we will laught at you](http://it.slashdot.org/story/12/05/24/1717219/
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
-_(Nothing yet)_
+
+### 0.1.0 (08/23/2012)
+
+Initial release.
 
 ## License
 Copyright (c) 2012 oncletom
