@@ -35,27 +35,31 @@ exports['crx'] = {
   'helper-crx': {
     'without codebase': function(test){
       var config = extensionConfigs.standard;
+      var crx = new ChromeExtension(config);
       test.expect(4);
 
       test.doesNotThrow(function(){
-        grunt.helper('crx', new ChromeExtension(config), function(){
+        grunt.helper('crx', crx, function(){
           test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 1);
           test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 0);
           test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 0);
 
+          crx.destroy();
           test.done();
         });
       });
     },
     'with codebase': function(test){
       var config = extensionConfigs.codebase;
+      var crx = new ChromeExtension(config);
       test.expect(3);
 
-      grunt.helper('crx', new ChromeExtension(config), function(){
+      grunt.helper('crx', crx, function(){
         test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 0);
         test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 1);
         test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 0);
 
+        crx.destroy();
         test.done();
       });
     },
@@ -73,6 +77,7 @@ exports['crx'] = {
         test.equal(grunt.file.expandFiles(path.join(crx.path + '/stuff/*')).length, 0);
         test.equal(grunt.file.expandFiles(path.join(crx.path + '/*')).length, 2);
 
+        crx.destroy();
         test.done();
       });
     }
@@ -102,6 +107,7 @@ exports['crx'] = {
             grunt.helper('crx-manifest', crx);
           });
 
+          crx.destroy();
           done();
         }
       ], test.done);
@@ -121,6 +127,8 @@ exports['crx'] = {
             test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 0);
             test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 1);
             test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 1);
+
+            crx.destroy();
             done();
           });
         }
