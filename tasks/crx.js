@@ -126,8 +126,8 @@ module.exports = function(grunt) {
 
         grunt.file.write(self.dest, data);
 
-        self.destroy();
         callback();
+        self.destroy();   //having this after enables to check the exclude behavior
       });
     });
   });
