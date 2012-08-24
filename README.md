@@ -27,6 +27,7 @@ There will be as many extension packaged as there are targets.
 * `src` (string, _mandatory_): location of a folder containing a Chrome Extension `manifest.json`;
 * `dest` (string, _mandatory_): location of a folder where the `crx` file will be available;
 * `baseURL` (string): folder URL where package files will be self hosted ([see Autoupdating in Chrome Extension docs](http://developer.chrome.com/extensions/autoupdate.html));
+* `exclude` (array): array of [glob style]() `src`-relative paths which won't be included in the built package;
 * `privateKey` (string): location of the `.pem` file used to encrypt your extension;
 * `filename` (string|template pattern): filename of the package (like `myExtension.crx`) – `manifest` attributes are injected from the `manifest.json`;
 * `options` (object) – options that are directly provided to the `ChromeExtension` object;
@@ -78,7 +79,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ### 0.1.1 (08/24/2012)
 
-* added `exclude`
+* added `exclude` property
 
 ### 0.1.0 (08/23/2012)
 
