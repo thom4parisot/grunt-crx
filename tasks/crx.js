@@ -130,11 +130,11 @@ module.exports = function(grunt) {
           return done();
         }
 
-        var files = grunt.file.expandFiles(ChromeExtension.exclude.map(function(pattern){
+        var files = grunt.file.expand(ChromeExtension.exclude.map(function(pattern){
           return path.join(ChromeExtension.path, '/', pattern);
         }));
 
-        exec('rm -f '+ files.join(' '), done);
+        exec('rm -rf '+ files.join(' '), done);
       },
       function(done){
         ChromeExtension.pack(function(err, data){

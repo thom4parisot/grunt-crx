@@ -22,7 +22,8 @@ exports['crx'] = {
       "exclude": {
         "exclude": [
           "ignore.me",
-          "stuff/*"
+          "stuff/*",
+          "blah"
         ],
         "privateKey": fs.readFileSync("test/data/key.pem"),
         "rootDirectory": "test/data/src/",
@@ -70,12 +71,12 @@ exports['crx'] = {
 
       grunt.helper('crx', crx, function(){
         //local
-        test.equal(grunt.file.expandFiles('test/data/src/stuff/*').length, 1);
-        test.equal(grunt.file.expandFiles('test/data/src/*').length, 3);
+        test.equal(grunt.file.expand('test/data/src/stuff/*').length, 1);
+        test.equal(grunt.file.expand('test/data/src/*').length, 5);
 
         //copy
-        test.equal(grunt.file.expandFiles(path.join(crx.path + '/stuff/*')).length, 0);
-        test.equal(grunt.file.expandFiles(path.join(crx.path + '/*')).length, 2);
+        test.equal(grunt.file.expand(path.join(crx.path + '/stuff/*')).length, 0);
+        test.equal(grunt.file.expand(path.join(crx.path + '/*')).length, 3);
 
         crx.destroy();
         test.done();
