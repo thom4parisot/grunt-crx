@@ -41,6 +41,7 @@ There will be as many extension packaged as there are targets.
 
 ```javascript
 //grunt.js
+grunt.loadNpmTasks('grunt-crx');
 
 grunt.initConfig({
   crx: {
@@ -51,7 +52,8 @@ grunt.initConfig({
     myHostedPackage: {
       "src": "src-beta/",
       "dest": "dist/crx-beta/src",
-      "baseURL": "http://my.app.net/beta-files/"
+      "baseURL": "http://my.app.net/beta-files/",
+      "exclude": [ ".git", ".svn" ],
       "privateKey": "dist/crx-beta/key.pem",
       "options": {
         "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
@@ -73,6 +75,10 @@ Otherwise [we will laught at you](http://it.slashdot.org/story/12/05/24/1717219/
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
+
+### 0.1.1 (08/24/2012)
+
+* added `exclude`
 
 ### 0.1.0 (08/23/2012)
 
