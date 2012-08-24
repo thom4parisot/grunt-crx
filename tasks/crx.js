@@ -103,6 +103,12 @@ module.exports = function(grunt) {
       // Building manifest
       function(callback){
         grunt.helper('crx-manifest', extension, callback);
+      },
+      // Clearing stuff
+      function(callback){
+        extension.destroy();
+
+        callback();
       }
     ], /* Baking done! */ done);
   });
@@ -112,23 +118,14 @@ module.exports = function(grunt) {
   // ==========================================================================
 
   grunt.registerHelper('crx', function(ChromeExtension, callback) {
-    ChromeExtension.load(function(err){
-      var self = this;
-
+    ChromeExtension.pack(function(err, data){
       if (err){
         throw new grunt.task.taskError(err);
       }
 
-      this.pack(function(err, data){
-        if (err){
-          throw new grunt.task.taskError(err);
-        }
+      grunt.file.write(this.dest, data);
 
-        grunt.file.write(self.dest, data);
-
-        callback();
-        self.destroy();   //having this after enables to check the exclude behavior
-      });
+      callback();
     });
   });
 
