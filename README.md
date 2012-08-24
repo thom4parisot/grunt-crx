@@ -27,6 +27,7 @@ There will be as many extension packaged as there are targets.
 * `src` (string, _mandatory_): location of a folder containing a Chrome Extension `manifest.json`;
 * `dest` (string, _mandatory_): location of a folder where the `crx` file will be available;
 * `baseURL` (string): folder URL where package files will be self hosted ([see Autoupdating in Chrome Extension docs](http://developer.chrome.com/extensions/autoupdate.html));
+* `exclude` (array): array of [glob style](https://github.com/cowboy/grunt/blob/master/docs/api_file.md#file-lists-and-wildcards-%E2%9A%91) `src`-relative paths which won't be included in the built package;
 * `privateKey` (string): location of the `.pem` file used to encrypt your extension;
 * `filename` (string|template pattern): filename of the package (like `myExtension.crx`) – `manifest` attributes are injected from the `manifest.json`;
 * `options` (object) – options that are directly provided to the `ChromeExtension` object;
@@ -41,6 +42,7 @@ There will be as many extension packaged as there are targets.
 
 ```javascript
 //grunt.js
+grunt.loadNpmTasks('grunt-crx');
 
 grunt.initConfig({
   crx: {
@@ -51,7 +53,8 @@ grunt.initConfig({
     myHostedPackage: {
       "src": "src-beta/",
       "dest": "dist/crx-beta/src",
-      "baseURL": "http://my.app.net/beta-files/"
+      "baseURL": "http://my.app.net/beta-files/",
+      "exclude": [ ".git", ".svn" ],
       "privateKey": "dist/crx-beta/key.pem",
       "options": {
         "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
@@ -73,6 +76,10 @@ Otherwise [we will laught at you](http://it.slashdot.org/story/12/05/24/1717219/
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
+
+### 0.1.1 (08/24/2012)
+
+* added `exclude` property
 
 ### 0.1.0 (08/23/2012)
 
