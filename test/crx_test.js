@@ -3,18 +3,10 @@ var ChromeExtension = require('crx');
 var path = require('path');
 var fs = require('fs');
 var exec = require('child_process').exec;
-var taskConfigs, extensionConfigs;
+var extensionConfigs;
 
 exports['crx'] = {
   setUp: function(done) {
-    taskConfigs = {
-      "standard": {
-        "privateKey": "test/data/key.pem",
-        "src": "test/data/src/",
-        "dest": "test/data/files/"
-      }
-    };
-
     extensionConfigs = {
       "standard": {
         "privateKey": fs.readFileSync("test/data/key.pem"),
@@ -26,6 +18,15 @@ exports['crx'] = {
         "privateKey": fs.readFileSync("test/data/key.pem"),
         "rootDirectory": "test/data/src/",
         "dest": "test/data/files/test-codebase.crx"
+      },
+      "exclude": {
+        "exclude": [
+          "ignore.me",
+          "stuff/*"
+        ],
+        "privateKey": fs.readFileSync("test/data/key.pem"),
+        "rootDirectory": "test/data/src/",
+        "dest": "test/data/files/test.crx"
       }
     };
 
@@ -54,6 +55,23 @@ exports['crx'] = {
         test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 0);
         test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 1);
         test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 0);
+
+        test.done();
+      });
+    },
+    'excluding files': function(test){
+      var config = extensionConfigs.exclude;
+      var crx = new ChromeExtension(config);
+      test.expect(4);
+
+      grunt.helper('crx', crx, function(){
+        //local
+        test.equal(grunt.file.expandFiles('test/data/src/stuff/*').length, 1);
+        test.equal(grunt.file.expandFiles('test/data/src/*').length, 3);
+
+        //copy
+        test.equal(grunt.file.expandFiles(path.join(crx.path + '/stuff/*')).length, 0);
+        test.equal(grunt.file.expandFiles(path.join(crx.path + '/*')).length, 2);
 
         test.done();
       });
