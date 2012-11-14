@@ -5,7 +5,7 @@
 Package your Chrome Extensions in a bliss.
 
 ## Getting Started
-Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-crx`
+Install this grunt plugin next to your project's [grunt.js gruntfile](https://github.com/cowboy/grunt/blob/master/docs/getting_started.md) with: `npm install grunt-crx`
 
 Then add this line to your project's `grunt.js` gruntfile:
 
@@ -13,12 +13,9 @@ Then add this line to your project's `grunt.js` gruntfile:
 grunt.loadNpmTasks('grunt-crx');
 ```
 
-[grunt]: https://github.com/cowboy/grunt
-[getting_started]: https://github.com/cowboy/grunt/blob/master/docs/getting_started.md
-
 ## Documentation
 
-This task is a [multi task][types_of_tasks], meaning that grunt will automatically iterate over all `crx` targets if a target is not specified.
+This task is a [multi task](https://github.com/gruntjs/grunt/blob/master/docs/types_of_tasks.md), meaning that grunt will automatically iterate over all `crx` targets if a target is not specified.
 
 There will be as many extension packaged as there are targets.
 
@@ -77,6 +74,11 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.1.2 (11/14/2012)
+
+* `grunt` 0.4 compatibility
+* credits to jed for its [crx](https://npmjs.org/package/crx) node module
+
 ### 0.1.1 (08/24/2012)
 
 * added `exclude` property
@@ -84,6 +86,12 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 ### 0.1.0 (08/23/2012)
 
 Initial release.
+
+## Credits
+
+* [Jed Schmidt](http://who.jed.is) for the useful `crx` module
+* [Grunt authors](http://gruntjs.com) for this great toolbox
+* **you**, contributor, user or anyone providing a feedback
 
 ## License
 Copyright (c) 2012 oncletom
