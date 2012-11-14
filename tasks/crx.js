@@ -19,6 +19,7 @@ var fs = require('fs');
  * @return {String}
  */
 function buildConfigProperty(key){
+  /*jshint validthis:true */
   return [ this.name, this.target, key ].join('.');
 }
 
@@ -29,6 +30,7 @@ function buildConfigProperty(key){
  * @param defaults
  */
 function configure(defaults){
+  /*jshint validthis:true */
   var grunt = this;
   var self = grunt.task.current;
   var p = buildConfigProperty.bind(self);
