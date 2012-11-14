@@ -9,7 +9,6 @@
 var ChromeExtension = require('crx');
 var path = require('path');
 var fs = require('fs');
-var exec = require('child_process').exec;
 
 /**
  * Expand the current multitask config key name
@@ -66,6 +65,9 @@ function configure(defaults){
 
 module.exports = function(grunt) {
 
+  var crx = require('./../lib/crx').init(grunt);
+  var crxManifest = require('./../lib/crx-manifest').init(grunt);
+
   // ==========================================================================
   // TASKS
   // ==========================================================================
@@ -101,11 +103,11 @@ module.exports = function(grunt) {
     grunt.utils.async.series([
       // Building extension
       function(callback){
-        grunt.helper('crx', extension, callback);
+        crx.build(extension, callback);
       },
       // Building manifest
       function(callback){
-        grunt.helper('crx-manifest', extension, callback);
+        crxManifest.build(extension, callback);
       },
       // Clearing stuff
       function(callback){
@@ -114,52 +116,5 @@ module.exports = function(grunt) {
         callback();
       }
     ], /* Baking done! */ done);
-  });
-
-  // ==========================================================================
-  // HELPERS
-  // ==========================================================================
-
-  grunt.registerHelper('crx', function(ChromeExtension, callback) {
-    grunt.utils.async.series([
-      function(done){
-        ChromeExtension.load(done);
-      },
-      function(done){
-        if (!Array.isArray(ChromeExtension.exclude) || !ChromeExtension.exclude.length){
-          return done();
-        }
-
-        var files = grunt.file.expand(ChromeExtension.exclude.map(function(pattern){
-          return path.join(ChromeExtension.path, '/', pattern);
-        }));
-
-        exec('rm -rf '+ files.join(' '), done);
-      },
-      function(done){
-        ChromeExtension.pack(function(err, data){
-          if (err){
-            throw new grunt.task.taskError(err);
-          }
-
-          grunt.file.write(this.dest, data);
-
-          done();
-        });
-      }
-    ], callback);
-  });
-
-  grunt.registerHelper('crx-manifest', function(ChromeExtension, callback) {
-    if (!ChromeExtension.manifest.update_url || !ChromeExtension.codebase){
-      return callback();
-    }
-
-    ChromeExtension.generateUpdateXML();
-    var dest = path.dirname(ChromeExtension.dest);
-
-    grunt.file.write(path.join(dest, path.basename(ChromeExtension.manifest.update_url)), ChromeExtension.updateXML);
-
-    callback();
   });
 };
