@@ -6,6 +6,8 @@
  * Licensed under the MIT license.
  */
 
+"use strict";
+
 var ChromeExtension = require('crx');
 var path = require('path');
 var fs = require('fs');

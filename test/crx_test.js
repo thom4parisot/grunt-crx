@@ -1,3 +1,5 @@
+"use strict";
+
 var grunt = require('grunt');
 var ChromeExtension = require('crx');
 var path = require('path');
