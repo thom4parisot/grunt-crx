@@ -5,6 +5,9 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var extensionConfigs;
 
+var crxHelper = require(__dirname + '/../lib/crx.js').init(grunt);
+var crxManifestHelper = require(__dirname + '/../lib/crx-manifest.js').init(grunt);
+
 exports['crx'] = {
   setUp: function(done) {
     extensionConfigs = {
@@ -40,7 +43,7 @@ exports['crx'] = {
       test.expect(4);
 
       test.doesNotThrow(function(){
-        grunt.helper('crx', crx, function(){
+        crxHelper.build(crx, function(){
           test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 1);
           test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 0);
           test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 0);
@@ -55,7 +58,7 @@ exports['crx'] = {
       var crx = new ChromeExtension(config);
       test.expect(3);
 
-      grunt.helper('crx', crx, function(){
+      crxHelper.build(crx, function(){
         test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 0);
         test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 1);
         test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 0);
@@ -69,7 +72,7 @@ exports['crx'] = {
       var crx = new ChromeExtension(config);
       test.expect(4);
 
-      grunt.helper('crx', crx, function(){
+      crxHelper.build(crx, function(){
         //local
         test.equal(grunt.file.expand('test/data/src/stuff/*').length, 1);
         test.equal(grunt.file.expand('test/data/src/*').length, 5);
@@ -89,7 +92,7 @@ exports['crx'] = {
       test.expect(1);
 
       test.throws(function(){
-        grunt.helper('crx-manifest', new ChromeExtension(config));
+        crxManifestHelper.build(new ChromeExtension(config));
       });
 
       test.done();
@@ -101,11 +104,11 @@ exports['crx'] = {
 
       grunt.utils.async.series([
         function(done){
-          grunt.helper('crx', crx, done);
+          crxHelper.build(crx, done);
         },
         function(done){
           test.throws(function(){
-            grunt.helper('crx-manifest', crx);
+            crxManifestHelper.build(crx);
           });
 
           crx.destroy();
@@ -120,10 +123,10 @@ exports['crx'] = {
 
       grunt.utils.async.series([
         function(done){
-          grunt.helper('crx', crx, done);
+          crxHelper.build(crx, done);
         },
         function(done){
-          grunt.helper('crx-manifest', crx, function(){
+          crxManifestHelper.build(crx, function(){
 
             test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 0);
             test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 1);
