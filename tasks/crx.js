@@ -34,16 +34,18 @@ function configure(defaults){
   var grunt = this;
   var self = grunt.task.current;
   var p = buildConfigProperty.bind(self);
+  // Support both 0.6 and 0.8. path.existsSync is deprecated
+  var existsSync = fs.existsSync || path.existsSync;
 
   // Configuring stuff
   self.requiresConfig(p('dest'), p('src'));
   grunt.utils._.defaults(self.data, defaults);
 
   // Checking availability
-  if (!path.existsSync(self.file.src)){
+  if (!existsSync(self.file.src)){
     throw self.taskError('Unable to locate source directory.');
   }
-  if (!path.existsSync(self.data.privateKey)){
+  if (!existsSync(self.data.privateKey)){
     throw self.taskError('Unable to locate your private key.');
   }
 
