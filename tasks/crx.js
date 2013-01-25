@@ -15,58 +15,66 @@ var fs = require('fs');
 /**
  * Expand the current multitask config key name
  *
- * @param key
+ * @param {!Object} task Task object.
+ * @param {!String} key Property name.
  * @return {String}
  */
-function buildConfigProperty(key){
-  /*jshint validthis:true */
-  return [ this.name, this.target, key ].join('.');
+function buildConfigProperty(task, key){
+  return [ task.name, task.target, key ].join('.');
 }
 
 /**
  * Configures the task
  *
- * @this {Grunt}
- * @param defaults
+ * @param {!Object} grunt Grunt itself.
+ * @param {!Object} config User settings hash.
+ * @param {Object} defaults Default settings hash.
  */
-function configure(defaults){
-  /*jshint validthis:true */
-  var grunt = this;
-  var self = grunt.task.current;
-  var p = buildConfigProperty.bind(self);
-  // Support both 0.6 and 0.8. path.existsSync is deprecated
-  var existsSync = fs.existsSync || path.existsSync;
+function configure(grunt, config, defaults){
+  var task = grunt.task.current;
+  var p = buildConfigProperty.bind(null, task);
+  var existsSync = fs.existsSync;
 
   // Configuring stuff
-  self.requiresConfig(p('dest'), p('src'));
-  grunt.utils._.defaults(self.data, defaults);
+  task.requiresConfig(p('dest'), p('src'));
+  grunt.util._.defaults(config, defaults);
+
+  // XXX (alexeykuzmin): Is there a better way to get source folder path?
+  var sourceDir = config.src[0];
 
   // Checking availability
-  if (!existsSync(self.file.src)){
-    throw self.taskError('Unable to locate source directory.');
+  if (!existsSync(sourceDir)){
+    grunt.fail.fatal('Unable to locate source directory.');
   }
-  if (!existsSync(self.data.privateKey)){
-    throw self.taskError('Unable to locate your private key.');
+  if (!existsSync(config.privateKey)){
+    grunt.fail.fatal('Unable to locate your private key.');
   }
 
-  self.data.manifest = grunt.file.readJSON(path.join(self.file.src, 'manifest.json'));
-  if (!self.data.manifest.version || !self.data.manifest.name || !self.data.manifest.manifest_version){
-    throw self.taskError('Invalid manifest: one or more property is missing.');
-  }
+  // Check extension manifest
+  config.manifest = grunt.file.readJSON(path.join(sourceDir, 'manifest.json'));
+  [
+    'manifest_version',
+    'name',
+    'version'
+  ].forEach(function(prop) {
+      if ('undefined' === typeof config.manifest[prop]) {
+        grunt.fail.fatal('Invalid manifest: property "' + prop + '" is missing.');
+      }
+  });
 
   // Expanding filename
-  self.data.filename = grunt.template.process(
-    self.data.filename,
-    grunt.utils._.extend(grunt.config(), {
-      "manifest": self.data.manifest,
-      "pkg": grunt.config('pkg') || grunt.file.readJSON('package.json')
-    })
+  config.filename = grunt.template.process(
+      config.filename,
+      grunt.util._.extend(grunt.config(), {
+        "manifest": config.manifest,
+        "pkg": grunt.config('pkg') || grunt.file.readJSON('package.json')
+      })
   );
 
   // Preparing filesystem
   // @todo maybe use a basepath to avoid execution context problems
   //grunt.file.mkdir(self.data.buildDir);
-  grunt.file.mkdir(path.dirname(self.file.dest));
+  grunt.file.mkdir(path.dirname(config.dest));
 }
 
 module.exports = function(grunt) {
@@ -92,35 +100,37 @@ module.exports = function(grunt) {
       "privateKey": "key.pem"
     };
 
-    // Check & Configure
-    configure.bind(grunt)(defaults);
+    this.files.forEach(function(config) {
+      configure(grunt, config, defaults);
 
-    // Preparing crx
-    extension = new ChromeExtension({
-      "codebase": this.data.baseURL ? this.data.baseURL + this.data.filename : '',
-      "maxBuffer": this.data.options.maxBuffer,
-      "privateKey": fs.readFileSync(this.data.privateKey),
-      "rootDirectory": this.file.src,
-      "dest": path.join(this.file.dest, this.data.filename),
-      "exclude": this.data.exclude
+      // Preparing crx
+      extension = new ChromeExtension({
+        "codebase": config.baseURL ? config.baseURL + config.filename : '',
+        "maxBuffer": config.options.maxBuffer,
+        "privateKey": fs.readFileSync(config.privateKey),
+        "rootDirectory": config.src,
+        "dest": path.join(config.dest, config.filename),
+        "exclude": config.exclude
+      });
+
+      // Building
+      grunt.util.async.series([
+        // Building extension
+        function(callback){
+          crx.build(extension, callback);
+        },
+        // Building manifest
+        function(callback){
+          crxManifest.build(extension, callback);
+        },
+        // Clearing stuff
+        function(callback){
+          extension.destroy();
+
+          callback();
+        }
+      ], /* Baking done! */ done);
     });
 
-    // Building
-    grunt.utils.async.series([
-      // Building extension
-      function(callback){
-        crx.build(extension, callback);
-      },
-      // Building manifest
-      function(callback){
-        crxManifest.build(extension, callback);
-      },
-      // Clearing stuff
-      function(callback){
-        extension.destroy();
-
-        callback();
-      }
-    ], /* Baking done! */ done);
   });
 };
