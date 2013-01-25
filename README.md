@@ -5,9 +5,9 @@
 Package your Chrome Extensions in a bliss.
 
 ## Getting Started
-Install this grunt plugin next to your project's [grunt.js gruntfile](https://github.com/cowboy/grunt/blob/master/docs/getting_started.md) with: `npm install grunt-crx`
+Install this grunt plugin next to your project's [Gruntfile.js](https://github.com/cowboy/grunt/blob/master/docs/getting_started.md) with: `npm install grunt-crx`
 
-Then add this line to your project's `grunt.js` gruntfile:
+Then add this line to your project's `Gruntfile.js`:
 
 ```javascript
 grunt.loadNpmTasks('grunt-crx');
@@ -38,7 +38,7 @@ There will be as many extension packaged as there are targets.
 ### Example
 
 ```javascript
-//grunt.js
+//Gruntfile.js
 grunt.loadNpmTasks('grunt-crx');
 
 grunt.initConfig({
