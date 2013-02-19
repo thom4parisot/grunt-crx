@@ -11,6 +11,7 @@
 var ChromeExtension = require('crx');
 var path = require('path');
 var fs = require('fs');
+var required_properties = ['manifest_version', 'name', 'version'];
 
 /**
  * Expand the current multitask config key name
@@ -52,11 +53,7 @@ function configure(grunt, config, defaults){
 
   // Check extension manifest
   config.manifest = grunt.file.readJSON(path.join(sourceDir, 'manifest.json'));
-  [
-    'manifest_version',
-    'name',
-    'version'
-  ].forEach(function(prop) {
+  required_properties.forEach(function(prop) {
       if ('undefined' === typeof config.manifest[prop]) {
         grunt.fail.fatal('Invalid manifest: property "' + prop + '" is missing.');
       }
