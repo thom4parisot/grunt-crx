@@ -102,7 +102,7 @@ module.exports = function(grunt) {
       extension = new ChromeExtension({
         "codebase": config.baseURL ? config.baseURL + config.filename : '',
         "maxBuffer": config.options.maxBuffer,
-        "privateKey": fs.readFileSync(config.privateKey),
+        "privateKey": grunt.file.read(config.privateKey),
         "rootDirectory": config.src,
         "dest": path.join(config.dest, config.filename),
         "exclude": config.exclude
