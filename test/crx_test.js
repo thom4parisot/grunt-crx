@@ -46,9 +46,9 @@ exports['crx'] = {
 
       test.doesNotThrow(function(){
         crxHelper.build(crx, function(){
-          test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 1);
-          test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 0);
-          test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 0);
+          test.equal(grunt.file.expand('test/data/files/test.crx').length, 1);
+          test.equal(grunt.file.expand('test/data/files/test-codebase.crx').length, 0);
+          test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
 
           crx.destroy();
           test.done();
@@ -61,9 +61,9 @@ exports['crx'] = {
       test.expect(3);
 
       crxHelper.build(crx, function(){
-        test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 0);
-        test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 1);
-        test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 0);
+        test.equal(grunt.file.expand('test/data/files/test.crx').length, 0);
+        test.equal(grunt.file.expand('test/data/files/test-codebase.crx').length, 1);
+        test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
 
         crx.destroy();
         test.done();
@@ -104,7 +104,7 @@ exports['crx'] = {
       var crx = new ChromeExtension(config);
       test.expect(1);
 
-      grunt.utils.async.series([
+      grunt.util.async.series([
         function(done){
           crxHelper.build(crx, done);
         },
@@ -122,17 +122,16 @@ exports['crx'] = {
       var config = extensionConfigs.codebase;
       var crx = new ChromeExtension(config);
       test.expect(3);
-
-      grunt.utils.async.series([
+      grunt.util.async.series([
         function(done){
           crxHelper.build(crx, done);
         },
         function(done){
           crxManifestHelper.build(crx, function(){
 
-            test.equal(grunt.file.expandFiles('test/data/files/test.crx').length, 0);
-            test.equal(grunt.file.expandFiles('test/data/files/test-codebase.crx').length, 1);
-            test.equal(grunt.file.expandFiles('test/data/files/updates.xml').length, 1);
+            test.equal(grunt.file.expand('test/data/files/test.crx').length, 0);
+            test.equal(grunt.file.expand('test/data/files/test-codebase.crx').length, 1);
+            test.equal(grunt.file.expand('test/data/files/updates.xml').length, 1);
 
             crx.destroy();
             done();

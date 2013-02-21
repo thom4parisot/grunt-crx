@@ -1,7 +1,7 @@
 {
   "name": "grunt-crx",
   "description": "Package your Chrome Extensions in a bliss.",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "homepage": "https://github.com/oncletom/grunt-crx",
   "author": {
     "name": "oncletom",
@@ -21,20 +21,22 @@
       "url": "https://github.com/oncletom/grunt-crx/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "grunt.js",
+  "main": "Gruntfile.js",
   "bin": "bin/grunt-crx",
   "engines": {
-    "node": "0.6.x, 0.8.x"
+    "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "./node_modules/.bin/grunt"
+    "test": "grunt test"
   },
   "dependencies": {
-    "grunt": "~0.3.9",
     "crx": "~0.2.8"
   },
   "devDependencies": {
-    "grunt": "~0.3.9"
+    "grunt": "~0.4.0",
+    "grunt-contrib-jshint": "~0.1.0",
+    "grunt-contrib-nodeunit": "~0.1.1",
+    "grunt-contrib-watch": "~0.1.4"
   },
   "keywords": [
     "gruntplugin",
