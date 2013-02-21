@@ -74,9 +74,13 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.2.0 (02/19/2013)
+
+* `grunt` 0.4 API compatibility
+
 ### 0.1.2 (11/14/2012)
 
-* `grunt` 0.4 compatibility
+* eventual `grunt` 0.4 compatibility
 * credits to jed for its [crx](https://npmjs.org/package/crx) node module
 
 ### 0.1.1 (08/24/2012)

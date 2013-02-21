@@ -10,7 +10,7 @@
 
 var ChromeExtension = require('crx');
 var path = require('path');
-var fs = require('fs');
+var required_properties = ['manifest_version', 'name', 'version'];
 
 /**
  * Expand the current multitask config key name
@@ -33,7 +33,6 @@ function buildConfigProperty(task, key){
 function configure(grunt, config, defaults){
   var task = grunt.task.current;
   var p = buildConfigProperty.bind(null, task);
-  var existsSync = fs.existsSync;
 
   // Configuring stuff
   task.requiresConfig(p('dest'), p('src'));
@@ -43,20 +42,16 @@ function configure(grunt, config, defaults){
   var sourceDir = config.src[0];
 
   // Checking availability
-  if (!existsSync(sourceDir)){
+  if (!grunt.file.exists(sourceDir)){
     grunt.fail.fatal('Unable to locate source directory.');
   }
-  if (!existsSync(config.privateKey)){
+  if (!grunt.file.exists(config.privateKey)){
     grunt.fail.fatal('Unable to locate your private key.');
   }
 
   // Check extension manifest
   config.manifest = grunt.file.readJSON(path.join(sourceDir, 'manifest.json'));
-  [
-    'manifest_version',
-    'name',
-    'version'
-  ].forEach(function(prop) {
+  required_properties.forEach(function(prop) {
       if ('undefined' === typeof config.manifest[prop]) {
         grunt.fail.fatal('Invalid manifest: property "' + prop + '" is missing.');
       }
@@ -107,7 +102,7 @@ module.exports = function(grunt) {
       extension = new ChromeExtension({
         "codebase": config.baseURL ? config.baseURL + config.filename : '',
         "maxBuffer": config.options.maxBuffer,
-        "privateKey": fs.readFileSync(config.privateKey),
+        "privateKey": grunt.file.read(config.privateKey),
         "rootDirectory": config.src,
         "dest": path.join(config.dest, config.filename),
         "exclude": config.exclude
