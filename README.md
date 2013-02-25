@@ -53,6 +53,9 @@ grunt.initConfig({
 
 ### Advanced Example
 
+This example demonstrates how you can tweak your builds upon your own
+source architecture.
+
 ```javascript
 //Gruntfile.js
 grunt.loadNpmTasks('grunt-crx');
@@ -62,9 +65,9 @@ grunt.initConfig({
     myHostedPackage: {
       "src": "src-beta/",
       "dest": "dist/crx-beta/src",
-      "baseURL": "http://my.app.net/beta-files/",
+      "baseURL": "http://my.app.net/files/",
       "exclude": [ ".git", ".svn" ],
-      "privateKey": "dist/crx-beta/key.pem",
+      "privateKey": "~/.ssh/chrome-apps.pem",
       "options": {
         "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
       }
@@ -74,6 +77,12 @@ grunt.initConfig({
 ```
 
 ### Fully Customized Example
+
+This example demonstrates how to build separate channels of packages
+within a same repository location.
+
+Pretty handy to use a Git workflow and pre-release code before deploying it
+in production.
 
 ```javascript
 //Gruntfile.js
@@ -87,7 +96,7 @@ grunt.initConfig({
       "dest": "dist/staging/src",
       "baseURL": "http://my.app.intranet/files/",
       "filename": "<%= pkg.name %>-<%= manifest.version %>-dev.crx",
-      "exclude": [ ".git", ".svn" ],
+      "exclude": [ ".git", ".svn", "*.pem" ],
       "privateKey": "dist/key.pem",
       "options": {
         "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
@@ -95,9 +104,9 @@ grunt.initConfig({
     },
     production: {
       "src": "src/",
-      "dest": "dist/crx-beta/src",
+      "dest": "dist/production/src",
       "baseURL": "http://my.app.net/files/",
-      "exclude": [ ".git", ".svn" ],
+      "exclude": [ ".git", ".svn", "dev/**", "*.pem" ],
       "options": {
         "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
       }
