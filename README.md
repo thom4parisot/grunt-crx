@@ -5,7 +5,7 @@
 Package your Chrome Extensions in a bliss.
 
 ## Getting Started
-Install this grunt plugin next to your project's [Gruntfile.js](https://github.com/cowboy/grunt/blob/master/docs/getting_started.md) with: `npm install grunt-crx`
+Install this grunt plugin next to your project's [Gruntfile.js](https://github.com/gruntjs/grunt/wiki/Getting-started) with: `npm install grunt-crx`
 
 Then add this line to your project's `Gruntfile.js`:
 
@@ -15,7 +15,7 @@ grunt.loadNpmTasks('grunt-crx');
 
 ## Documentation
 
-This task is a [multi task](https://github.com/gruntjs/grunt/blob/master/docs/types_of_tasks.md), meaning that grunt will automatically iterate over all `crx` targets if a target is not specified.
+This task is a [multi task](https://github.com/gruntjs/grunt/wiki/Creating-tasks), meaning that grunt will automatically iterate over all `crx` targets if a target is not specified.
 
 There will be as many extension packaged as there are targets.
 
@@ -24,7 +24,7 @@ There will be as many extension packaged as there are targets.
 * `src` (string, _mandatory_): location of a folder containing a Chrome Extension `manifest.json`;
 * `dest` (string, _mandatory_): location of a folder where the `crx` file will be available;
 * `baseURL` (string): folder URL where package files will be self hosted ([see Autoupdating in Chrome Extension docs](http://developer.chrome.com/extensions/autoupdate.html));
-* `exclude` (array): array of [glob style](https://github.com/cowboy/grunt/blob/master/docs/api_file.md#file-lists-and-wildcards-%E2%9A%91) `src`-relative paths which won't be included in the built package;
+* `exclude` (array): array of [glob style](https://github.com/gruntjs/grunt/wiki/grunt.file) `src`-relative paths which won't be included in the built package;
 * `privateKey` (string): location of the `.pem` file used to encrypt your extension;
 * `filename` (string|template pattern): filename of the package (like `myExtension.crx`) – `manifest` attributes are injected from the `manifest.json`;
 * `options` (object) – options that are directly provided to the `ChromeExtension` object;
@@ -46,13 +46,58 @@ grunt.initConfig({
     myPublicPackage: {
       "src": "src/",
       "dest": "dist/crx/",
-    },
+    }
+  }
+});
+```
+
+### Advanced Example
+
+```javascript
+//Gruntfile.js
+grunt.loadNpmTasks('grunt-crx');
+
+grunt.initConfig({
+  crx: {
     myHostedPackage: {
       "src": "src-beta/",
       "dest": "dist/crx-beta/src",
       "baseURL": "http://my.app.net/beta-files/",
       "exclude": [ ".git", ".svn" ],
       "privateKey": "dist/crx-beta/key.pem",
+      "options": {
+        "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
+      }
+    }
+  }
+});
+```
+
+### Fully Customized Example
+
+```javascript
+//Gruntfile.js
+grunt.loadNpmTasks('grunt-crx');
+
+grunt.initConfig({
+  manifest: grunt.file.readJSON('src/manifest.json'),
+  crx: {
+    staging: {
+      "src": "src/",
+      "dest": "dist/staging/src",
+      "baseURL": "http://my.app.intranet/files/",
+      "filename": "<%= pkg.name %>-<%= manifest.version %>-dev.crx",
+      "exclude": [ ".git", ".svn" ],
+      "privateKey": "dist/key.pem",
+      "options": {
+        "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
+      }
+    },
+    production: {
+      "src": "src/",
+      "dest": "dist/crx-beta/src",
+      "baseURL": "http://my.app.net/files/",
+      "exclude": [ ".git", ".svn" ],
       "options": {
         "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
       }
@@ -74,7 +119,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
-### 0.2.0 (02/19/2013)
+### 0.2.0 (02/25/2013)
 
 * `grunt` 0.4 API compatibility
 
