@@ -11,6 +11,7 @@
 var ChromeExtension = require('crx');
 var path = require('path');
 var required_properties = ['manifest_version', 'name', 'version'];
+var homeDir = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
 
 /**
  * Expand the current multitask config key name
@@ -24,9 +25,23 @@ function buildConfigProperty(task, key){
 }
 
 /**
+ * Resolve the home directory of a supposed-path value
+ *
+ * @param {String} value
+ * @returns {String}
+ */
+function resolveHomeDirectory(value){
+  if (homeDir && typeof value === 'string' && value[0] === '~'){
+    value = value.replace(/^~/, homeDir);
+  }
+
+  return value;
+}
+
+/**
  * Configures the task
  *
- * @param {!Object} grunt Grunt itself.
+ * @param {!grunt} grunt Grunt itself.
  * @param {!Object} config User settings hash.
  * @param {Object} defaults Default settings hash.
  */
@@ -40,6 +55,9 @@ function configure(grunt, config, defaults){
 
   // XXX (alexeykuzmin): Is there a better way to get source folder path?
   var sourceDir = config.src[0];
+
+  // Eventually expanding `~` in config paths
+  grunt.util._.assign(config, config, resolveHomeDirectory);
 
   // Checking availability
   if (!grunt.file.exists(sourceDir)){
