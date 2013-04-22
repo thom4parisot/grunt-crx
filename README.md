@@ -128,6 +128,11 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.2.1 (04/22/2013)
+
+* explicit support of Node.js 0.10
+* `~` will be expanded to your home directory folder in config files ([#11](https://github.com/oncletom/grunt-crx/pull/11))
+
 ### 0.2.0 (02/25/2013)
 
 * `grunt` 0.4 API compatibility
