@@ -8,7 +8,7 @@ var exec = require('child_process').exec;
 var extensionConfigs;
 
 var crxHelper = require(__dirname + '/../lib/crx.js').init(grunt);
-var crxManifestHelper = require(__dirname + '/../lib/crx-manifest.js').init(grunt);
+var autoupdateHelper = require(__dirname + '/../lib/autoupdate.js').init(grunt);
 
 exports['crx'] = {
   setUp: function(done) {
@@ -94,7 +94,7 @@ exports['crx'] = {
       test.expect(1);
 
       test.throws(function(){
-        crxManifestHelper.buildXML(new ChromeExtension(config));
+        autoupdateHelper.buildXML(new ChromeExtension(config));
       });
 
       test.done();
@@ -110,7 +110,7 @@ exports['crx'] = {
         },
         function(done){
           test.throws(function(){
-            crxManifestHelper.buildXML(crx);
+            autoupdateHelper.buildXML(crx);
           });
 
           crx.destroy();
@@ -127,7 +127,7 @@ exports['crx'] = {
           crxHelper.build(crx, done);
         },
         function(done){
-          crxManifestHelper.buildXML(crx, function(){
+          autoupdateHelper.buildXML(crx, function(){
 
             test.equal(grunt.file.expand('test/data/files/test.crx').length, 0);
             test.equal(grunt.file.expand('test/data/files/test-codebase.crx').length, 1);

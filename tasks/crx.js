@@ -93,7 +93,7 @@ function configure(grunt, config, defaults){
 module.exports = function(grunt) {
 
   var crx = require('./../lib/crx').init(grunt);
-  var crxManifest = require('./../lib/crx-manifest').init(grunt);
+  var autoupdateHelper = require('./../lib/autoupdate').init(grunt);
 
   // ==========================================================================
   // TASKS
@@ -134,7 +134,7 @@ module.exports = function(grunt) {
         },
         // Building manifest
         function(callback){
-          crxManifest.buildXML(extension, callback);
+          autoupdateHelper.buildXML(extension, callback);
         },
         // Clearing stuff
         function(callback){
