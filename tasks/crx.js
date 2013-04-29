@@ -102,16 +102,7 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('crx', 'Package Chrome Extensions, the simple way.', function() {
     var manifest, extension;
     var done = this.async();
-    var defaults = {
-      "appid": null,
-      "baseURL": null,
-      "exclude": [],
-      "filename": "<%= pkg.name %>-<%= manifest.version %>.crx",
-      "options": {
-        "maxBuffer": undefined
-      },
-      "privateKey": "key.pem"
-    };
+    var defaults = extensionHelper.getTaskConfiguration();
 
     this.files.forEach(function(config) {
       configure(grunt, config, defaults);

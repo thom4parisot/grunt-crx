@@ -1,0 +1,10 @@
+{
+  "appid": null,
+  "baseURL": null,
+  "exclude": [],
+  "filename": "<%= pkg.name %>-<%= manifest.version %>.crx",
+  "options": {
+    "maxBuffer": null
+  },
+  "privateKey": "key.pem"
+}
