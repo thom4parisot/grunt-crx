@@ -1,7 +1,6 @@
 "use strict";
 
 var grunt = require('grunt');
-var ChromeExtension = require('crx');
 var path = require('path');
 var exec = require('child_process').exec;
 var extensionConfigs, dynamicFilename = "grunt-crx-13.3.7.crx";
@@ -21,8 +20,7 @@ exports['crx'] = {
   },
   'helper-crx': {
     'without codebase': function(test){
-      var config = extensionHelper.expandConfiguration(extensionConfigs.standard);
-      var crx = new ChromeExtension(config);
+      var crx = extensionHelper.createObject(extensionConfigs.standard);
       test.expect(4);
 
       test.doesNotThrow(function(){
@@ -30,15 +28,13 @@ exports['crx'] = {
           test.equal(grunt.file.expand('test/data/files/test.crx').length, 1);
           test.equal(grunt.file.expand('test/data/files/'+dynamicFilename).length, 0);
           test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
-
           crx.destroy();
           test.done();
         });
       });
     },
     'with codebase': function(test){
-      var config = extensionHelper.expandConfiguration(extensionConfigs.codebase);
-      var crx = new ChromeExtension(config);
+      var crx = extensionHelper.createObject(extensionConfigs.codebase);
       test.expect(3);
 
       extensionHelper.build(crx, function(){
@@ -51,8 +47,7 @@ exports['crx'] = {
       });
     },
     'excluding files': function(test){
-      var config = extensionHelper.expandConfiguration(extensionConfigs.exclude);
-      var crx = new ChromeExtension(config);
+      var crx = extensionHelper.createObject(extensionConfigs.exclude);
       test.expect(4);
 
       extensionHelper.build(crx, function(){
@@ -71,18 +66,16 @@ exports['crx'] = {
   },
   'helper-autoupdate': {
     'without running crx-helper': function(test){
-      var config = extensionHelper.expandConfiguration(extensionConfigs.codebase);
       test.expect(1);
 
       test.throws(function(){
-        autoupdateHelper.buildXML(new ChromeExtension(config));
+        autoupdateHelper.buildXML(extensionHelper.createObject(extensionConfigs.codebase));
       });
 
       test.done();
     },
     'without codebase': function(test){
-      var config = extensionHelper.expandConfiguration(extensionConfigs.standard);
-      var crx = new ChromeExtension(config);
+      var crx = extensionHelper.createObject(extensionConfigs.standard);
       test.expect(1);
 
       grunt.util.async.series([
@@ -100,8 +93,7 @@ exports['crx'] = {
       ], test.done);
     },
     'with codebase': function(test){
-      var config = extensionHelper.expandConfiguration(extensionConfigs.codebase);
-      var crx = new ChromeExtension(config);
+      var crx = extensionHelper.createObject(extensionConfigs.codebase);
       test.expect(3);
       grunt.util.async.series([
         function(done){

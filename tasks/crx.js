@@ -8,10 +8,6 @@
 
 "use strict";
 
-var ChromeExtension = require('crx');
-var path = require('path');
-
-
 module.exports = function(grunt) {
   var extensionHelper = require('./../lib/crx').init(grunt);
   var autoupdateHelper = require('./../lib/autoupdate').init(grunt);
@@ -20,18 +16,8 @@ module.exports = function(grunt) {
     var done = this.async();
     var defaults = extensionHelper.getTaskConfiguration();
 
-    this.files.forEach(function(config) {
-      config = extensionHelper.expandConfiguration(config, defaults);
-
-      // Preparing crx
-      var extension = new ChromeExtension({
-        "codebase": config.baseURL ? config.baseURL + config.filename : '',
-        "maxBuffer": config.options.maxBuffer,
-        "privateKey": grunt.file.read(config.privateKey),
-        "rootDirectory": config.src,
-        "dest": config.dest,
-        "exclude": config.exclude
-      });
+    this.files.forEach(function(taskConfig) {
+      var extension = extensionHelper.createObject(taskConfig, defaults);
 
       // Building
       grunt.util.async.series([
