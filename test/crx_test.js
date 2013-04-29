@@ -12,27 +12,9 @@ var autoupdateHelper = require(__dirname + '/../lib/autoupdate.js').init(grunt);
 exports['crx'] = {
   setUp: function(done) {
     extensionConfigs = {
-      "standard": {
-        "privateKey": grunt.file.read("test/data/key.pem"),
-        "rootDirectory": "test/data/src/",
-        "dest": "test/data/files/test.crx"
-      },
-      "codebase": {
-        "codebase": "http://example.com/files/test-codebase.crx",
-        "privateKey": grunt.file.read("test/data/key.pem"),
-        "rootDirectory": "test/data/src/",
-        "dest": "test/data/files/test-codebase.crx"
-      },
-      "exclude": {
-        "exclude": [
-          "ignore.me",
-          "stuff/*",
-          "blah"
-        ],
-        "privateKey": grunt.file.read("test/data/key.pem"),
-        "rootDirectory": "test/data/src/",
-        "dest": "test/data/files/test.crx"
-      }
+      "standard": extensionHelper.getTaskConfiguration('test-standard'),
+      "codebase": extensionHelper.getTaskConfiguration('test-codebase'),
+      "exclude": extensionHelper.getTaskConfiguration('test-exclude')
     };
 
     exec('rm -f test/data/files/*', done);

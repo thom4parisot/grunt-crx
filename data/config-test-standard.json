@@ -1,0 +1,5 @@
+{
+  "privateKey": "test/data/key.pem",
+  "rootDirectory": "test/data/src/",
+  "dest": "test/data/files/test.crx"
+}
