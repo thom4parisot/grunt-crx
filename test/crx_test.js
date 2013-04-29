@@ -7,7 +7,7 @@ var fs = require('fs');
 var exec = require('child_process').exec;
 var extensionConfigs;
 
-var crxHelper = require(__dirname + '/../lib/crx.js').init(grunt);
+var extensionHelper = require(__dirname + '/../lib/crx.js').init(grunt);
 var autoupdateHelper = require(__dirname + '/../lib/autoupdate.js').init(grunt);
 
 exports['crx'] = {
@@ -45,7 +45,7 @@ exports['crx'] = {
       test.expect(4);
 
       test.doesNotThrow(function(){
-        crxHelper.build(crx, function(){
+        extensionHelper.build(crx, function(){
           test.equal(grunt.file.expand('test/data/files/test.crx').length, 1);
           test.equal(grunt.file.expand('test/data/files/test-codebase.crx').length, 0);
           test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
@@ -60,7 +60,7 @@ exports['crx'] = {
       var crx = new ChromeExtension(config);
       test.expect(3);
 
-      crxHelper.build(crx, function(){
+      extensionHelper.build(crx, function(){
         test.equal(grunt.file.expand('test/data/files/test.crx').length, 0);
         test.equal(grunt.file.expand('test/data/files/test-codebase.crx').length, 1);
         test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
@@ -74,7 +74,7 @@ exports['crx'] = {
       var crx = new ChromeExtension(config);
       test.expect(4);
 
-      crxHelper.build(crx, function(){
+      extensionHelper.build(crx, function(){
         //local
         test.equal(grunt.file.expand('test/data/src/stuff/*').length, 1);
         test.equal(grunt.file.expand('test/data/src/*').length, 5);
@@ -88,7 +88,7 @@ exports['crx'] = {
       });
     }
   },
-  'helper-manifest': {
+  'helper-autoupdate': {
     'without running crx-helper': function(test){
       var config = extensionConfigs.codebase;
       test.expect(1);
@@ -106,7 +106,7 @@ exports['crx'] = {
 
       grunt.util.async.series([
         function(done){
-          crxHelper.build(crx, done);
+          extensionHelper.build(crx, done);
         },
         function(done){
           test.throws(function(){
@@ -124,7 +124,7 @@ exports['crx'] = {
       test.expect(3);
       grunt.util.async.series([
         function(done){
-          crxHelper.build(crx, done);
+          extensionHelper.build(crx, done);
         },
         function(done){
           autoupdateHelper.buildXML(crx, function(){

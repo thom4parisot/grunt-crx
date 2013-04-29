@@ -92,7 +92,7 @@ function configure(grunt, config, defaults){
 
 module.exports = function(grunt) {
 
-  var crx = require('./../lib/crx').init(grunt);
+  var extensionHelper = require('./../lib/crx').init(grunt);
   var autoupdateHelper = require('./../lib/autoupdate').init(grunt);
 
   // ==========================================================================
@@ -130,7 +130,7 @@ module.exports = function(grunt) {
       grunt.util.async.series([
         // Building extension
         function(callback){
-          crx.build(extension, callback);
+          extensionHelper.build(extension, callback);
         },
         // Building manifest
         function(callback){
