@@ -128,6 +128,11 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.2.2 (04/29/2013)
+
+* fixing invalid call for `lodash.assign`
+* added tests for main task to avoid this kind of regression
+
 ### 0.2.1 (04/22/2013)
 
 * explicit support of Node.js 0.10
