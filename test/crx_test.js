@@ -3,7 +3,6 @@
 var grunt = require('grunt');
 var ChromeExtension = require('crx');
 var path = require('path');
-var fs = require('fs');
 var exec = require('child_process').exec;
 var extensionConfigs;
 
@@ -14,13 +13,13 @@ exports['crx'] = {
   setUp: function(done) {
     extensionConfigs = {
       "standard": {
-        "privateKey": fs.readFileSync("test/data/key.pem"),
+        "privateKey": grunt.file.read("test/data/key.pem"),
         "rootDirectory": "test/data/src/",
         "dest": "test/data/files/test.crx"
       },
       "codebase": {
         "codebase": "http://example.com/files/test-codebase.crx",
-        "privateKey": fs.readFileSync("test/data/key.pem"),
+        "privateKey": grunt.file.read("test/data/key.pem"),
         "rootDirectory": "test/data/src/",
         "dest": "test/data/files/test-codebase.crx"
       },
@@ -30,7 +29,7 @@ exports['crx'] = {
           "stuff/*",
           "blah"
         ],
-        "privateKey": fs.readFileSync("test/data/key.pem"),
+        "privateKey": grunt.file.read("test/data/key.pem"),
         "rootDirectory": "test/data/src/",
         "dest": "test/data/files/test.crx"
       }
