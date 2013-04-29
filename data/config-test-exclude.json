@@ -5,6 +5,6 @@
     "blah"
   ],
   "privateKey": "test/data/key.pem",
-  "rootDirectory": "test/data/src/",
+  "src": "test/data/src/",
   "dest": "test/data/files/test.crx"
 }

@@ -21,7 +21,7 @@ exports['crx'] = {
   },
   'helper-crx': {
     'without codebase': function(test){
-      var config = extensionConfigs.standard;
+      var config = extensionHelper.expandConfiguration(extensionConfigs.standard);
       var crx = new ChromeExtension(config);
       test.expect(4);
 
@@ -37,7 +37,7 @@ exports['crx'] = {
       });
     },
     'with codebase': function(test){
-      var config = extensionConfigs.codebase;
+      var config = extensionHelper.expandConfiguration(extensionConfigs.codebase);
       var crx = new ChromeExtension(config);
       test.expect(3);
 
@@ -51,7 +51,7 @@ exports['crx'] = {
       });
     },
     'excluding files': function(test){
-      var config = extensionConfigs.exclude;
+      var config = extensionHelper.expandConfiguration(extensionConfigs.exclude);
       var crx = new ChromeExtension(config);
       test.expect(4);
 
@@ -71,7 +71,7 @@ exports['crx'] = {
   },
   'helper-autoupdate': {
     'without running crx-helper': function(test){
-      var config = extensionConfigs.codebase;
+      var config = extensionHelper.expandConfiguration(extensionConfigs.codebase);
       test.expect(1);
 
       test.throws(function(){
@@ -81,7 +81,7 @@ exports['crx'] = {
       test.done();
     },
     'without codebase': function(test){
-      var config = extensionConfigs.standard;
+      var config = extensionHelper.expandConfiguration(extensionConfigs.standard);
       var crx = new ChromeExtension(config);
       test.expect(1);
 
@@ -100,7 +100,7 @@ exports['crx'] = {
       ], test.done);
     },
     'with codebase': function(test){
-      var config = extensionConfigs.codebase;
+      var config = extensionHelper.expandConfiguration(extensionConfigs.codebase);
       var crx = new ChromeExtension(config);
       test.expect(3);
       grunt.util.async.series([
