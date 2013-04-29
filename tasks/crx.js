@@ -134,7 +134,7 @@ module.exports = function(grunt) {
         },
         // Building manifest
         function(callback){
-          crxManifest.build(extension, callback);
+          crxManifest.buildXML(extension, callback);
         },
         // Clearing stuff
         function(callback){

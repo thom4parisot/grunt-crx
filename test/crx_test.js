@@ -94,7 +94,7 @@ exports['crx'] = {
       test.expect(1);
 
       test.throws(function(){
-        crxManifestHelper.build(new ChromeExtension(config));
+        crxManifestHelper.buildXML(new ChromeExtension(config));
       });
 
       test.done();
@@ -110,7 +110,7 @@ exports['crx'] = {
         },
         function(done){
           test.throws(function(){
-            crxManifestHelper.build(crx);
+            crxManifestHelper.buildXML(crx);
           });
 
           crx.destroy();
@@ -127,7 +127,7 @@ exports['crx'] = {
           crxHelper.build(crx, done);
         },
         function(done){
-          crxManifestHelper.build(crx, function(){
+          crxManifestHelper.buildXML(crx, function(){
 
             test.equal(grunt.file.expand('test/data/files/test.crx').length, 0);
             test.equal(grunt.file.expand('test/data/files/test-codebase.crx').length, 1);
