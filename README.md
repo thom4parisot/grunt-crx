@@ -128,11 +128,15 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
-### 0.2.2 (04/29/2013)
+### 0.2.2 (04/30/2013)
 
 * fixing invalid call for `lodash.assign`
 * added tests for main task to avoid this kind of regression
 * deprecated `filename` config property (simply use `dest`) — less confusing
+* deprecated `baseURL` config property (simply use `codebase`)
+
+Next minor release will tidy the task config to enable more features, and even
+deal with regular Chrome Extensions for the Web Store!
 
 ### 0.2.1 (04/22/2013)
 
