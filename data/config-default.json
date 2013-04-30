@@ -1,0 +1,11 @@
+{
+  "appid": null,
+  "baseURL": null,
+  "exclude": [],
+  "options": {
+    "maxBuffer": null
+  },
+  "privateKey": "key.pem",
+  "src": null,
+  "dest": null
+}

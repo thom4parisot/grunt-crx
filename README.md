@@ -24,11 +24,10 @@ There will be as many extension packaged as there are targets.
 * `src` (string, _mandatory_): location of a folder containing a Chrome Extension `manifest.json`;
 * `dest` (string, _mandatory_): location of a folder where the `crx` file will be available;
 * `baseURL` (string): folder URL where package files will be self hosted ([see Autoupdating in Chrome Extension docs](http://developer.chrome.com/extensions/autoupdate.html));
-* `exclude` (array): array of [glob style](https://github.com/gruntjs/grunt/wiki/grunt.file) `src`-relative paths which won't be included in the built package;
+* `exclude` (array): array of [glob style](http://gruntjs.com/api/grunt.file#globbing-patterns) `src`-relative paths which won't be included in the built package;
 * `privateKey` (string): location of the `.pem` file used to encrypt your extension;
-* `filename` (string|template pattern): filename of the package (like `myExtension.crx`) – `manifest` attributes are injected from the `manifest.json`;
 * `options` (object) – options that are directly provided to the `ChromeExtension` object;
- * `maxBuffer` (Number): amount of bytes available to package the extension ([see child_process#exec](http://nodejs.org/docs/v0.6.21/api/child_process.html#child_process_child_process_exec_command_options_callback))
+ * `maxBuffer` (Number): amount of bytes available to package the extension ([see child_process#exec](http://nodejs.org/docs/latest/api/child_process.html#child_process_child_process_exec_command_options_callback))
 
 ### Target Defaults
 
@@ -64,7 +63,7 @@ grunt.initConfig({
   crx: {
     myHostedPackage: {
       "src": "src-beta/",
-      "dest": "dist/crx-beta/src",
+      "dest": "dist/crx-beta/src/my-extension.crx",
       "baseURL": "http://my.app.net/files/",
       "exclude": [ ".git", ".svn" ],
       "privateKey": "~/.ssh/chrome-apps.pem",
@@ -89,13 +88,14 @@ in production.
 grunt.loadNpmTasks('grunt-crx');
 
 grunt.initConfig({
+  pkg: grunt.file.readJSON('package.json'),
   manifest: grunt.file.readJSON('src/manifest.json'),
   crx: {
     staging: {
       "src": "src/",
-      "dest": "dist/staging/src",
+      "dest": "dist/staging/src/<%= pkg.name %>-<%= manifest.version %>-dev.crx",
       "baseURL": "http://my.app.intranet/files/",
-      "filename": "<%= pkg.name %>-<%= manifest.version %>-dev.crx",
+      "filename": "",
       "exclude": [ ".git", ".svn", "*.pem" ],
       "privateKey": "dist/key.pem",
       "options": {
@@ -104,7 +104,7 @@ grunt.initConfig({
     },
     production: {
       "src": "src/",
-      "dest": "dist/production/src",
+      "dest": "dist/production/src/<%= pkg.name %>-<%= manifest.version %>-dev.crx",
       "baseURL": "http://my.app.net/files/",
       "exclude": [ ".git", ".svn", "dev/**", "*.pem" ],
       "options": {
@@ -127,6 +127,12 @@ Otherwise [we will laught at you](http://it.slashdot.org/story/12/05/24/1717219/
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
 ## Release History
+
+### 0.2.2 (04/29/2013)
+
+* fixing invalid call for `lodash.assign`
+* added tests for main task to avoid this kind of regression
+* deprecated `filename` config property (simply use `dest`) — less confusing
 
 ### 0.2.1 (04/22/2013)
 
