@@ -19,18 +19,7 @@ module.exports = {
     exec('rm -f test/data/files/*', done);
   },
   'buildXML': {
-    'with manifest.update_url': function(test){
-      test.expect(1);
-
-      var crx = extensionHelper.createObject(extensionConfigs.standard);
-
-      autoupdateHelper.buildXML(crx, function(){
-        test.equal(grunt.file.expand('test/data/files/updates.xml').length, 1);
-
-        test.done();
-      });
-    },
-    'without manifest.update_url': function(test){
+    'without codebase, without update_url': function(test){
       test.expect(1);
 
       var crx = extensionHelper.createObject(extensionConfigs.standard);
@@ -38,6 +27,29 @@ module.exports = {
 
       autoupdateHelper.buildXML(crx, function(){
         test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
+
+        test.done();
+      });
+    },
+    'with codebase, without update_url': function(test){
+      test.expect(1);
+
+      var crx = extensionHelper.createObject(extensionConfigs.codebase);
+      crx.manifest.update_url = null;
+
+      autoupdateHelper.buildXML(crx, function(){
+        test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
+
+        test.done();
+      });
+    },
+    'with codebase, with update_url': function(test){
+      test.expect(1);
+
+      var crx = extensionHelper.createObject(extensionConfigs.codebase);
+
+      autoupdateHelper.buildXML(crx, function(){
+        test.equal(grunt.file.expand('test/data/files/updates.xml').length, 1);
 
         test.done();
       });
