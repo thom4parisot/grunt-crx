@@ -128,6 +128,11 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.2.3 (05/15/2013)
+
+* fixing `update.xml` generation when no `update_url` is provided ([#22](https://github.com/oncletom/grunt-crx/pull/22))
+* better code coverage for `update.xml` file generation.
+
 ### 0.2.2 (04/30/2013)
 
 * fixing invalid call for `lodash.assign`
