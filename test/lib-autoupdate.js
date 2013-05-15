@@ -18,65 +18,29 @@ module.exports = {
 
     exec('rm -f test/data/files/*', done);
   },
-  'helper-autoupdate': {
-    'without running crx-helper': function(test){
+  'buildXML': {
+    'with manifest.update_url': function(test){
       test.expect(1);
 
-      test.throws(function(){
-        autoupdateHelper.buildXML(extensionHelper.createObject(extensionConfigs.codebase));
-      });
-
-      test.done();
-    },
-    'without codebase': function(test){
       var crx = extensionHelper.createObject(extensionConfigs.standard);
+
+      autoupdateHelper.buildXML(crx, function(){
+        test.equal(grunt.file.expand('test/data/files/updates.xml').length, 1);
+
+        test.done();
+      });
+    },
+    'without manifest.update_url': function(test){
       test.expect(1);
 
-      grunt.util.async.series([
-        function(done){
-          extensionHelper.build(crx, done);
-        },
-        function(done){
-          test.throws(function(){
-            autoupdateHelper.buildXML(crx);
-          });
-
-          crx.destroy();
-          done();
-        }
-      ], test.done);
-    },
-    'without update url': function(test){
       var crx = extensionHelper.createObject(extensionConfigs.standard);
       crx.manifest.update_url = null;
-
-      test.expect(1);
 
       autoupdateHelper.buildXML(crx, function(){
         test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
 
         test.done();
       });
-    },
-    'with codebase': function(test){
-      var crx = extensionHelper.createObject(extensionConfigs.codebase);
-      test.expect(3);
-      grunt.util.async.series([
-        function(done){
-          extensionHelper.build(crx, done);
-        },
-        function(done){
-          autoupdateHelper.buildXML(crx, function(){
-
-            test.equal(grunt.file.expand('test/data/files/test.crx').length, 0);
-            test.equal(grunt.file.expand('test/data/files/'+dynamicFilename).length, 1);
-            test.equal(grunt.file.expand('test/data/files/updates.xml').length, 1);
-
-            crx.destroy();
-            done();
-          });
-        }
-      ], test.done);
     }
   }
 };

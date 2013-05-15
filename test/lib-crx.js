@@ -17,7 +17,7 @@ module.exports = {
 
     exec('rm -f test/data/files/*', done);
   },
-  'helper-crx': {
+  'build': {
     'without codebase': function(test){
       var crx = extensionHelper.createObject(extensionConfigs.standard);
       test.expect(4);
