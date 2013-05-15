@@ -92,6 +92,18 @@ exports['crx'] = {
         }
       ], test.done);
     },
+    'without update url': function(test){
+      var crx = extensionHelper.createObject(extensionConfigs.standard);
+      crx.manifest.update_url = null;
+
+      test.expect(1);
+
+      autoupdateHelper.buildXML(crx, function(){
+        test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
+
+        test.done();
+      });
+    },
     'with codebase': function(test){
       var crx = extensionHelper.createObject(extensionConfigs.codebase);
       test.expect(3);
