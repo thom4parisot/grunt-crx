@@ -1,6 +1,7 @@
 # grunt-crx
 
 [![Build Status](https://secure.travis-ci.org/oncletom/grunt-crx.png?branch=master)](http://travis-ci.org/oncletom/grunt-crx)
+[![Dependencies Status](https://david-dm.org/oncletom/grunt-crx.png)](https://david-dm.org/oncletom/grunt-crx)
 
 Package your Chrome Extensions in a bliss.
 
