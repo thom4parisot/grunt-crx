@@ -10,9 +10,7 @@
   "boss":    true,
   "eqnull":  true,
   "node":    true,
-  "es5":     true,
   "strict":  true,
-
 
   "globals": {}
 }
