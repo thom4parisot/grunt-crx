@@ -30,8 +30,9 @@ module.exports = function(grunt) {
 
   // Alias for nodeunit.
   grunt.registerTask('test', 'nodeunit');
+  grunt.registerTask('test-all', ['jshint', 'test']);
 
   // Default task.
-  grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('default', ['test-all']);
 
 };
