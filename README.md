@@ -130,6 +130,11 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.3.0 (07/31/2013)
+
+* full Windows compatibility ([#25](https://github.com/oncletom/grunt-crx/pull/25))
+* added [CONTRIBUTORS](CONTRIBUTORS.md)
+
 ### 0.2.3 (05/15/2013)
 
 * fixing `update.xml` generation when no `update_url` is provided ([#22](https://github.com/oncletom/grunt-crx/pull/22))
