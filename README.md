@@ -130,6 +130,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.2.5 (08/01/2013)
+
+* fixing `src` interpreted as an array ([#26](https://github.com/oncletom/grunt-crx/pull/26))
+
 ### 0.2.3 (05/15/2013)
 
 * fixing `update.xml` generation when no `update_url` is provided ([#22](https://github.com/oncletom/grunt-crx/pull/22))
