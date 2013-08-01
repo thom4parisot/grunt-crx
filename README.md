@@ -130,10 +130,18 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+### 0.3.1 (08/01/2013)
+
+* fixing `src` interpreted as an array ([#26](https://github.com/oncletom/grunt-crx/pull/26))
+
 ### 0.3.0 (07/31/2013)
 
 * full Windows compatibility ([#25](https://github.com/oncletom/grunt-crx/pull/25))
 * added [CONTRIBUTORS](CONTRIBUTORS.md)
+
+### 0.2.5 (08/01/2013)
+
+* fixing `src` interpreted as an array ([#26](https://github.com/oncletom/grunt-crx/pull/26))
 
 ### 0.2.3 (05/15/2013)
 
