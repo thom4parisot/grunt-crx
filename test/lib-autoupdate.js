@@ -2,7 +2,6 @@
 
 var grunt = require('grunt');
 var path = require('path');
-var exec = require('child_process').exec;
 var extensionConfigs, dynamicFilename = "grunt-crx-13.3.7.crx";
 var wrench = require('wrench');
 var fs = require('fs');
