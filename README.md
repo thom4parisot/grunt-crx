@@ -15,6 +15,15 @@ Then add this line to your project's `Gruntfile.js`:
 grunt.loadNpmTasks('grunt-crx');
 ```
 
+## Dependencies
+* openssl - Used to sign your Chrome extensions
+  * Linux: sudo apt-get install openssl
+  * Windows: http://www.openssl.org/related/binaries.html
+* ssh-keygen - Used to generate new signatures
+  * Linux: Should already exist
+  * Windows: Comes with git, if you have [git install location]/bin in your PATH you should be set
+
+
 ## Documentation
 
 This task is a [multi task](https://github.com/gruntjs/grunt/wiki/Creating-tasks), meaning that grunt will automatically iterate over all `crx` targets if a target is not specified.

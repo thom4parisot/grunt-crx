@@ -3,6 +3,9 @@
 var grunt = require('grunt');
 var path = require('path');
 var exec = require('child_process').exec;
+var wrench = require('wrench');
+var fs = require('fs');
+
 var extensionConfigs, dynamicFilename = "grunt-crx-13.3.7.crx";
 
 var extensionHelper = require(__dirname + '/../lib/crx.js').init(grunt);
@@ -15,8 +18,11 @@ module.exports = {
       "exclude": extensionHelper.getTaskConfiguration('test-exclude'),
       "edge": extensionHelper.getTaskConfiguration('test-edge')
     };
-
-    exec('rm -f test/data/files/*', done);
+    if (fs.existsSync("test/data/files/")) {
+      wrench.rmdirSyncRecursive("test/data/files/");
+    }
+    fs.mkdirSync("test/data/files");
+    done();
   },
   'build': {
     'without codebase': function(test){
