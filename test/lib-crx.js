@@ -12,7 +12,8 @@ module.exports = {
     extensionConfigs = {
       "standard": extensionHelper.getTaskConfiguration('test-standard'),
       "codebase": extensionHelper.getTaskConfiguration('test-codebase'),
-      "exclude": extensionHelper.getTaskConfiguration('test-exclude')
+      "exclude": extensionHelper.getTaskConfiguration('test-exclude'),
+      "edge": extensionHelper.getTaskConfiguration('test-edge')
     };
 
     exec('rm -f test/data/files/*', done);
@@ -61,6 +62,20 @@ module.exports = {
         crx.destroy();
         test.done();
       });
+    },
+    'edge case': function(test){
+      var standard = extensionHelper.createObject(extensionConfigs.standard);
+      var edge = extensionHelper.createObject(extensionConfigs.edge);
+
+      test.expect(4);
+
+      test.equal(typeof standard.rootDirectory, "string");
+      test.equal(typeof edge.rootDirectory, "string");
+
+      test.equal(typeof standard.dest, "string");
+      test.equal(typeof edge.dest, "string");
+
+      test.done();
     }
   }
 };
