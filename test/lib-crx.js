@@ -2,8 +2,6 @@
 
 var grunt = require('grunt');
 var path = require('path');
-var rimraf = require('rimraf');
-var fs = require('fs');
 
 var extensionConfigs, dynamicFilename = "grunt-crx-13.3.7.crx";
 
@@ -17,9 +15,11 @@ module.exports = {
       "exclude": extensionHelper.getTaskConfiguration('test-exclude'),
       "edge": extensionHelper.getTaskConfiguration('test-edge')
     };
-    rimraf("test/data/files/", function(err) {
-      fs.mkdir("test/data/files/", done);
-    });
+
+    grunt.file.delete("test/data/files/");
+    grunt.file.mkdir("test/data/files/");
+
+    done();
   },
   'build': {
     'without codebase': function(test){
