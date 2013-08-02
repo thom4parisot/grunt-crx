@@ -137,64 +137,32 @@ Otherwise [we will laught at you](http://it.slashdot.org/story/12/05/24/1717219/
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
 
-## Release History
-
-### 0.3.1 (08/01/2013)
-
-* fixing `src` interpreted as an array ([#26](https://github.com/oncletom/grunt-crx/pull/26))
-
-### 0.3.0 (07/31/2013)
-
-* full Windows compatibility ([#25](https://github.com/oncletom/grunt-crx/pull/25))
-* added [CONTRIBUTORS](CONTRIBUTORS.md)
-
-### 0.2.5 (08/01/2013)
-
-* fixing `src` interpreted as an array ([#26](https://github.com/oncletom/grunt-crx/pull/26))
-
-### 0.2.3 (05/15/2013)
-
-* fixing `update.xml` generation when no `update_url` is provided ([#22](https://github.com/oncletom/grunt-crx/pull/22))
-* better code coverage for `update.xml` file generation.
-
-### 0.2.2 (04/30/2013)
-
-* fixing invalid call for `lodash.assign`
-* added tests for main task to avoid this kind of regression
-* deprecated `filename` config property (simply use `dest`) — less confusing
-* deprecated `baseURL` config property (simply use `codebase`)
-
-Next minor release will tidy the task config to enable more features, and even
-deal with regular Chrome Extensions for the Web Store!
-
-### 0.2.1 (04/22/2013)
-
-* explicit support of Node.js 0.10
-* `~` will be expanded to your home directory folder in config files ([#11](https://github.com/oncletom/grunt-crx/pull/11))
-
-### 0.2.0 (02/25/2013)
-
-* `grunt` 0.4 API compatibility
-
-### 0.1.2 (11/14/2012)
-
-* eventual `grunt` 0.4 compatibility
-* credits to jed for its [crx](https://npmjs.org/package/crx) node module
-
-### 0.1.1 (08/24/2012)
-
-* added `exclude` property
-
-### 0.1.0 (08/23/2012)
-
-Initial release.
 
 ## Credits
 
-* [Jed Schmidt](http://who.jed.is) for the useful `crx` module
+* [Jed Schmidt](http://who.jed.is) for the useful [crx]() module
 * [Grunt authors](http://gruntjs.com) for this great toolbox
-* **you**, contributor, user or anyone providing a feedback
+* [**you**, contributor](CONTRIBUTORS.md), user or anyone providing a feedback
 
 ## License
-Copyright (c) 2012 oncletom
-Licensed under the MIT license.
+
+    The MIT License (MIT)
+    Copyright © 2013 Thomas Parisot, https://oncletom.io
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the “Software”), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
