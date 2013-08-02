@@ -2,7 +2,6 @@
 
 var grunt = require('grunt');
 var path = require('path');
-var exec = require('child_process').exec;
 var extensionConfigs, dynamicFilename = "grunt-crx-13.3.7.crx";
 
 var extensionHelper = require(__dirname + '/../lib/crx.js').init(grunt);
@@ -16,7 +15,10 @@ module.exports = {
       "exclude": extensionHelper.getTaskConfiguration('test-exclude')
     };
 
-    exec('rm -f test/data/files/*', done);
+    grunt.file.delete("test/data/files/");
+    grunt.file.mkdir("test/data/files/");
+
+    done();
   },
   'buildXML': {
     'without codebase, without update_url': function(test){
