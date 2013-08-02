@@ -4,10 +4,17 @@
 [![Dependencies Status](https://david-dm.org/oncletom/grunt-crx.png)](https://david-dm.org/oncletom/grunt-crx)
 [![Dev Dependencies Status](https://david-dm.org/oncletom/grunt-crx/dev-status.png)](https://david-dm.org/oncletom/grunt-crx#info=devDependencies)
 
-Package your Chrome Extensions in a bliss.
+`grunt-crx` is a Grunt task used to **package private Chrome Extensions**.
+
+In the **future**, this task will also help you to also package
+[Packaged Apps](http://developer.chrome.com/apps/), *Hosted Apps*, and public Chrome Extensions to publish on the [Chrome Web Store](https://chrome.google.com/webstore/).
 
 ## Getting Started
-Install this grunt plugin next to your project's [Gruntfile.js](https://github.com/gruntjs/grunt/wiki/Getting-started) with: `npm install grunt-crx`
+Install this grunt plugin next to your project's [Gruntfile.js](http://gruntjs.com/getting-started) with the following command:
+
+```bash
+npm install --save-dev grunt-crx
+```
 
 Then add this line to your project's `Gruntfile.js`:
 
@@ -16,17 +23,19 @@ grunt.loadNpmTasks('grunt-crx');
 ```
 
 ## Dependencies
-* openssl - Used to sign your Chrome extensions
-  * Linux: sudo apt-get install openssl
-  * Windows: http://www.openssl.org/related/binaries.html
-* ssh-keygen - Used to generate new signatures
-  * Linux: Should already exist
-  * Windows: Comes with git, if you have [git install location]/bin in your PATH you should be set
+
+* `openssl` - Used to sign your Chrome extensions
+  * Linux: `sudo apt-get install openssl`
+  * OS X: Should already exist
+  * Windows: [openssl.org/related/binaries.html](http://www.openssl.org/related/binaries.html)
+* `ssh-keygen` - Used to generate new signatures
+  * Linux and OS X: Should already exist
+  * Windows: Comes with git, if you have `<git install location>/bin` in your `PATH` you should be set
 
 
 ## Documentation
 
-This task is a [multi task](https://github.com/gruntjs/grunt/wiki/Creating-tasks), meaning that grunt will automatically iterate over all `crx` targets if a target is not specified.
+This task is a [multi task](http://gruntjs.com/creating-tasks#multi-tasks), meaning that grunt will automatically iterate over all `crx` targets if a target is not specified.
 
 There will be as many extension packaged as there are targets.
 
@@ -45,7 +54,7 @@ There will be as many extension packaged as there are targets.
 * `privateKey`: `key.pem` — which means the task will look forward its file next to the `grunt.js` one;
 * `filename`: `<%= pkg.name %>-<%= manifest.version %>.crx` – which means it will automagically use your `package.json` name and `manifest.json` version to build the filename.
 
-### Example
+## Configuration Examples
 
 ```javascript
 //Gruntfile.js
@@ -135,12 +144,17 @@ Otherwise [we will laught at you](http://it.slashdot.org/story/12/05/24/1717219/
 
 
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [grunt][grunt].
+
+In lieu of a formal styleguide, take care to maintain the existing coding style.
+
+If you don't add unit tests, someone will take care of that before shipping the module to NPM.
+Take any contribution as an opportunity to learn.
+
 
 
 ## Credits
 
-* [Jed Schmidt](http://who.jed.is) for the useful [crx]() module
+* [Jed Schmidt](http://who.jed.is) for the useful [crx](https://github.com/jed/crx) module
 * [Grunt authors](http://gruntjs.com) for this great toolbox
 * [**you**, contributor](CONTRIBUTORS.md), user or anyone providing a feedback
 
