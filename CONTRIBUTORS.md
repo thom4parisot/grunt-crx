@@ -8,6 +8,6 @@ This list is sorted in an alphabetically order.
 * [Bryan Ehrlich](https://github.com/adotout)
  * Windows compatibility
 * [Changwoo Park](https://github.com/pismute)
- * Config setting bugfix
+ * Various bugfixes
 * [Patrick Williams](https://github.com/pwmckenna)
  * Node 0.6 and 0.8 API deprecation cleanup
