@@ -27,16 +27,17 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt test-all"
+    "test": "jshint -c .jshintrc lib/* tasks/* && mocha --reporter list",
+    "test-fast": "mocha --reporter list"
   },
   "dependencies": {
     "crx": "~0.4.0"
   },
   "devDependencies": {
     "grunt": "~0.4.0",
-    "grunt-contrib-jshint": "~0.6.0",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt-contrib-watch": "~0.5.0"
+    "chai": "~1.8.0",
+    "jshint": "~2.1.11",
+    "mocha": "~1.13.0"
   },
   "keywords": [
     "gruntplugin",
