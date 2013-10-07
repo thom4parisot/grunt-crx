@@ -2,83 +2,80 @@
 
 var grunt = require('grunt');
 var path = require('path');
-
-var extensionConfigs, dynamicFilename = "grunt-crx-13.3.7.crx";
+var expect = require('chai').expect;
 
 var extensionHelper = require(__dirname + '/../lib/crx.js').init(grunt);
 
-module.exports = {
-  setUp: function(done) {
+describe('lib/crx', function(){
+  var extensionConfigs, dynamicFilename = "grunt-crx-13.3.7.crx";
+
+  beforeEach(function(){
     extensionConfigs = {
       "standard": extensionHelper.getTaskConfiguration('test-standard'),
       "codebase": extensionHelper.getTaskConfiguration('test-codebase'),
       "exclude": extensionHelper.getTaskConfiguration('test-exclude'),
       "edge": extensionHelper.getTaskConfiguration('test-edge')
     };
+  });
 
-    grunt.file.delete("test/data/files/");
-    grunt.file.mkdir("test/data/files/");
+  afterEach(function(){
+    grunt.file.exists("test/data/files/") && grunt.file.delete("test/data/files/");
+  });
+
+  it('should package without codebase setting', function(done){
+    var crx = extensionHelper.createObject(extensionConfigs.standard);
+
+    expect(function(){
+      extensionHelper.build(crx, function(){
+        expect(grunt.file.expand('test/data/files/test.crx')).to.have.length.of(1);
+        expect(grunt.file.expand('test/data/files/'+dynamicFilename)).to.be.empty;
+        expect(grunt.file.expand('test/data/files/updates.xml')).to.be.empty;
+        crx.destroy();
+
+        done();
+      });
+    }).to.not.throw();
+  });
+
+  it('should package with codebase setting', function(done){
+    var crx = extensionHelper.createObject(extensionConfigs.codebase);
+
+    extensionHelper.build(crx, function(){
+      expect(grunt.file.expand('test/data/files/test.crx')).to.be.empty;
+      expect(grunt.file.expand('test/data/files/'+dynamicFilename)).to.have.length.of(1);
+      expect(grunt.file.expand('test/data/files/updates.xml')).to.be.empty;
+
+      crx.destroy();
+      done();
+    });
+  });
+
+  it('should exclude files', function(done){
+    var crx = extensionHelper.createObject(extensionConfigs.exclude);
+    extensionHelper.build(crx, function(){
+      //local
+      expect(grunt.file.expand('test/data/src/stuff/*')).to.have.length.of(1);
+      expect(grunt.file.expand('test/data/src/*')).to.have.length.of(5);
+
+      //copy
+      expect(grunt.file.expand(path.join(crx.path + '/stuff/*'))).to.be.empty;
+      expect(grunt.file.expand(path.join(crx.path + '/*'))).to.have.length.of(3);
+
+      crx.destroy();
+      done();
+    });
+  });
+
+  it('should work with an array of sources', function(done){
+    var standard = extensionHelper.createObject(extensionConfigs.standard);
+    var edge = extensionHelper.createObject(extensionConfigs.edge);
+
+    expect(standard.rootDirectory).to.be.a('string');
+    expect(edge.rootDirectory).to.be.a('string');
+
+    expect(standard.dest).to.be.a('string');
+    expect(edge.dest).to.be.a('string');
 
     done();
-  },
-  'build': {
-    'without codebase': function(test){
-      var crx = extensionHelper.createObject(extensionConfigs.standard);
-      test.expect(4);
-
-      test.doesNotThrow(function(){
-        extensionHelper.build(crx, function(){
-          test.equal(grunt.file.expand('test/data/files/test.crx').length, 1);
-          test.equal(grunt.file.expand('test/data/files/'+dynamicFilename).length, 0);
-          test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
-          crx.destroy();
-          test.done();
-        });
-      });
-    },
-    'with codebase': function(test){
-      var crx = extensionHelper.createObject(extensionConfigs.codebase);
-      test.expect(3);
-
-      extensionHelper.build(crx, function(){
-        test.equal(grunt.file.expand('test/data/files/test.crx').length, 0);
-        test.equal(grunt.file.expand('test/data/files/'+dynamicFilename).length, 1);
-        test.equal(grunt.file.expand('test/data/files/updates.xml').length, 0);
-
-        crx.destroy();
-        test.done();
-      });
-    },
-    'excluding files': function(test){
-      var crx = extensionHelper.createObject(extensionConfigs.exclude);
-      test.expect(4);
-
-      extensionHelper.build(crx, function(){
-        //local
-        test.equal(grunt.file.expand('test/data/src/stuff/*').length, 1);
-        test.equal(grunt.file.expand('test/data/src/*').length, 5);
-
-        //copy
-        test.equal(grunt.file.expand(path.join(crx.path + '/stuff/*')).length, 0);
-        test.equal(grunt.file.expand(path.join(crx.path + '/*')).length, 3);
-
-        crx.destroy();
-        test.done();
-      });
-    },
-    'edge case': function(test){
-      var standard = extensionHelper.createObject(extensionConfigs.standard);
-      var edge = extensionHelper.createObject(extensionConfigs.edge);
-
-      test.expect(4);
-
-      test.equal(typeof standard.rootDirectory, "string");
-      test.equal(typeof edge.rootDirectory, "string");
-
-      test.equal(typeof standard.dest, "string");
-      test.equal(typeof edge.dest, "string");
-
-      test.done();
-    }
-  }
-};
+  });
+});
