@@ -1,6 +1,8 @@
 {
-  "codebase": "http://example.com/files/",
-  "privateKey": "test/data/key.pem",
-  "src": "test/data/src/",
-  "dest": "test/data/files/"
+  "src": "test/data/src/**/*",
+  "dest": "test/data/files/",
+  "options": {
+    "codebase": "http://example.com/files/",
+    "privateKey": "test/data/key.pem"
+  }
 }

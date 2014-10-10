@@ -1,5 +1,8 @@
 {
-  "privateKey": "test/data/key.pem",
-  "src": "test/data/src/",
-  "dest": "test/data/files/test.crx"
+  "files": {
+    "test/data/files/test.crx": "test/data/src/**/*"
+  },
+  "options": {
+    "privateKey": "test/data/key.pem"
+  }
 }

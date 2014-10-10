@@ -24,10 +24,11 @@
   "main": "Gruntfile.js",
   "bin": "bin/grunt-crx",
   "engines": {
-    "node": ">= 0.8.0 < 0.11.0"
+    "node": ">= 0.8.0 < 0.11.0",
+    "npm": ">= 1.4.6"
   },
   "scripts": {
-    "test": "npm run lint && npm run unit-tests",
+    "test": "npm run lint && npm run unit-tests && npm run coverage",
     "lint": "jshint {lib,tasks}/*.js",
     "unit-tests": "mocha -R dot test/*.js",
     "coverage-tests": "mocha -R travis-cov -r blanket test/*.js",
@@ -35,14 +36,17 @@
   },
   "config": {
     "blanket": {
-      "pattern": "//grunt-crx/(lib|tasks)/"
+      "pattern": "//grunt-crx/(tasks|lib)/"
     },
     "travis-cov": {
     }
   },
   "dependencies": {
+    "async": "^0.9.0",
     "crx": "^2.0.0",
-    "rimraf": "^2.2.8"
+    "lodash": "^2.4.1",
+    "rimraf": "^2.2.8",
+    "mkdirp": "^0.5.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
@@ -51,7 +55,8 @@
     "mocha": "^2.0.1",
     "blanket": "^1.1.6",
     "grunt": "^0.4.0",
-    "mkdirp": "^0.5.0",
+    "mocha": "^1.21.4",
+    "sinon": "^1.10.3",
     "travis-cov": "^0.2.5"
   },
   "keywords": [
