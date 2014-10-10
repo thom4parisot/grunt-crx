@@ -5,7 +5,7 @@
   "homepage": "https://github.com/oncletom/grunt-crx",
   "author": {
     "name": "oncletom",
-    "email": "thomas@oncle-tom.net",
+    "email": "hi@oncletom.io",
     "url": "https://oncletom.io"
   },
   "repository": {
@@ -24,21 +24,26 @@
   "main": "Gruntfile.js",
   "bin": "bin/grunt-crx",
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.8.0 < 0.11.0"
   },
   "scripts": {
-    "test": "jshint -c .jshintrc lib/* tasks/* && mocha --reporter list",
-    "test-fast": "mocha --reporter list"
+    "test": "npm run lint && npm run unit-tests",
+    "lint": "jshint {lib,tasks}/*.js",
+    "unit-tests": "mocha -R dot test/*.js"
   },
   "dependencies": {
-    "crx": "~2.0.0"
+    "crx": "^2.0.0",
+    "rimraf": "^2.2.8"
   },
   "devDependencies": {
     "chai": "^1.10.0",
-    "grunt": "~0.4.0",
     "jshint": "^2.5.10",
     "jszip": "^2.4.0",
-    "mocha": "^2.0.1"
+    "mocha": "^2.0.1",
+    "blanket": "^1.1.6",
+    "grunt": "^0.4.0",
+    "mkdirp": "^0.5.0",
+    "travis-cov": "^0.2.5"
   },
   "keywords": [
     "gruntplugin",
