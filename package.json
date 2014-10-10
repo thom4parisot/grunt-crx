@@ -29,7 +29,16 @@
   "scripts": {
     "test": "npm run lint && npm run unit-tests",
     "lint": "jshint {lib,tasks}/*.js",
-    "unit-tests": "mocha -R dot test/*.js"
+    "unit-tests": "mocha -R dot test/*.js",
+    "coverage-tests": "mocha -R travis-cov -r blanket test/*.js",
+    "coverage": "mocha -R html-cov -r blanket test/*.js > coverage.html"
+  },
+  "config": {
+    "blanket": {
+      "pattern": "//grunt-crx/(lib|tasks)/"
+    },
+    "travis-cov": {
+    }
   },
   "dependencies": {
     "crx": "^2.0.0",
