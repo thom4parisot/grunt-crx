@@ -1,3 +1,4 @@
+/* global describe, it, beforeEach, afterEach, expect */
 "use strict";
 
 var grunt = require('grunt');
@@ -19,7 +20,9 @@ describe('lib/autoupdate', function(){
   });
 
   afterEach(function(){
-    grunt.file.exists("test/data/files/") && grunt.file.delete("test/data/files/");
+    if (grunt.file.exists("test/data/files/")) {
+      grunt.file.delete("test/data/files/");
+    }
   });
 
   it('should not write an autoupdate XML file without codebase and without update_url', function(done){

@@ -1,3 +1,4 @@
+/* global describe, beforeEach, afterEach, it */
 "use strict";
 
 var grunt = require('grunt');
