@@ -31,7 +31,7 @@
     "test-fast": "mocha --reporter list"
   },
   "dependencies": {
-    "crx": "~0.4.0"
+    "crx": "~2.0.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
