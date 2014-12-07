@@ -46,13 +46,15 @@ There will be as many extension packaged as there are targets.
 * `baseURL` (string): folder URL where package files will be self hosted ([see Autoupdating in Chrome Extension docs](http://developer.chrome.com/extensions/autoupdate.html));
 * `exclude` (array): array of [glob style](http://gruntjs.com/api/grunt.file#globbing-patterns) `src`-relative paths which won't be included in the built package;
 * `privateKey` (string): location of the `.pem` file used to encrypt your extension;
+* `zipDest` (string): Optional location of a folder to write the `zip` archive (unsigned extension package) will be available;
 * `options` (object) – options that are directly provided to the `ChromeExtension` object;
  * `maxBuffer` (Number): amount of bytes available to package the extension ([see child_process#exec](http://nodejs.org/docs/latest/api/child_process.html#child_process_child_process_exec_command_options_callback))
 
 ### Target Defaults
 
 * `privateKey`: `key.pem` — which means the task will look forward its file next to the `grunt.js` one;
-* `filename`: `<%= pkg.name %>-<%= manifest.version %>.crx` – which means it will automagically use your `package.json` name and `manifest.json` version to build the filename.
+* `filename`: `<%= pkg.name %>-<%= manifest.version %>.crx` – which means it will automagically use your `package.json` name and `manifest.json` version to build the filename. Will be ignored if `dest` property contains a file name.
+* `zipFilename`: `<%= pkg.name %>-<%= manifest.version %>.zip` – which means it will automagically use your `package.json` name and `manifest.json` version to build the filename. Will be ignored if `zipDest` property contains a file name.
 
 ## Configuration Examples
 
@@ -125,6 +127,7 @@ grunt.initConfig({
     production: {
       "src": "src/",
       "dest": "dist/production/src/<%= pkg.name %>-<%= manifest.version %>-dev.crx",
+      "zipDest": "dist/production/src/<%= pkg.name %>-<%= manifest.version %>-dev.zip",
       "baseURL": "http://my.app.net/files/",
       "exclude": [ ".git", ".svn", "dev/**", "*.pem" ],
       "options": {

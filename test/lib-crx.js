@@ -1,8 +1,11 @@
+/* global describe, beforeEach, afterEach, it */
 "use strict";
 
 var grunt = require('grunt');
 var path = require('path');
 var expect = require('chai').expect;
+var fs = require("fs");
+var JSZip = require("jszip");
 
 var extensionHelper = require(__dirname + '/../lib/crx.js').init(grunt);
 
@@ -14,7 +17,8 @@ describe('lib/crx', function(){
       "standard": extensionHelper.getTaskConfiguration('test-standard'),
       "codebase": extensionHelper.getTaskConfiguration('test-codebase'),
       "exclude": extensionHelper.getTaskConfiguration('test-exclude'),
-      "edge": extensionHelper.getTaskConfiguration('test-edge')
+      "edge": extensionHelper.getTaskConfiguration('test-edge'),
+      "archive": extensionHelper.getTaskConfiguration('test-archive')
     };
   });
 
@@ -77,5 +81,22 @@ describe('lib/crx', function(){
     expect(edge.dest).to.be.a('string');
 
     done();
+  });
+
+  it('should archive a zip file if option is enabled', function(done) {
+    var crx = extensionHelper.createObject(extensionConfigs.archive);
+    extensionHelper.build(crx, function(){
+      var dest = extensionConfigs.archive.zipDest;
+      expect(grunt.file.exists(dest), 'zip file should have been created').to.be.true;
+      var jsZipFile = new JSZip();
+      jsZipFile.load(fs.readFileSync(dest));
+      expect(jsZipFile.file('ignore.me')).to.be.null;
+      expect(jsZipFile.file('blah')).to.be.null;
+      expect(jsZipFile.file('stuff')).to.be.null;
+      expect(jsZipFile.file('manifest.json').asText()).to.equal(fs.readFileSync('test/data/src/manifest.json', 'utf8'));
+      expect(jsZipFile.file('background.html').asText()).to.equal(fs.readFileSync('test/data/src/background.html', 'utf8'));
+      crx.destroy();
+      done();
+    });
   });
 });
