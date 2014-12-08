@@ -1,15 +1,14 @@
-# grunt-crx
+# grunt-crx [![Build Status](https://secure.travis-ci.org/oncletom/grunt-crx.svg?branch=master)](http://travis-ci.org/oncletom/grunt-crx)
 
-[![Build Status](https://secure.travis-ci.org/oncletom/grunt-crx.svg?branch=master)](http://travis-ci.org/oncletom/grunt-crx)
-[![Dependencies Status](https://david-dm.org/oncletom/grunt-crx.svg)](https://david-dm.org/oncletom/grunt-crx)
-[![Dev Dependencies Status](https://david-dm.org/oncletom/grunt-crx/dev-status.svg)](https://david-dm.org/oncletom/grunt-crx#info=devDependencies)
+`grunt-crx` is a Grunt task used to **package Chrome Extensions**.
 
-`grunt-crx` is a Grunt task used to **package private Chrome Extensions**.
+Chrome extensions can either be:
 
-In the **future**, this task will also help you to also package
-[Packaged Apps](http://developer.chrome.com/apps/), *Hosted Apps*, and public Chrome Extensions to publish on the [Chrome Web Store](https://chrome.google.com/webstore/).
+- **public**: *zip* files are uploaded on the [Chrome Web Store](https://chrome.google.com/webstore/));
+- **private**: *crx* files are signed with a private key and self-hosted.
 
 ## Getting Started
+
 Install this grunt plugin next to your project's [Gruntfile.js](http://gruntjs.com/getting-started) with the following command:
 
 ```bash
@@ -46,10 +45,7 @@ There will be as many extension packaged as there are targets.
 
 ## Configuration Examples
 
-```javascript
-//Gruntfile.js
-grunt.loadNpmTasks('grunt-crx');
-
+```js
 grunt.initConfig({
   crx: {
     myPublicPackage: {
@@ -65,10 +61,7 @@ grunt.initConfig({
 This example demonstrates how you can tweak your builds upon your own
 source architecture.
 
-```javascript
-//Gruntfile.js
-grunt.loadNpmTasks('grunt-crx');
-
+```js
 grunt.initConfig({
   crx: {
     myHostedPackage: {
@@ -95,10 +88,7 @@ within a same repository location.
 Pretty handy to use a Git workflow and pre-release code before deploying it
 in production.
 
-```javascript
-//Gruntfile.js
-grunt.loadNpmTasks('grunt-crx');
-
+```js
 grunt.initConfig({
   pkg: grunt.file.readJSON('package.json'),
   manifest: grunt.file.readJSON('src/manifest.json'),
@@ -158,10 +148,11 @@ Take any contribution as an opportunity to learn.
 * [Grunt authors](http://gruntjs.com) for this great toolbox
 * [**you**, contributor](CONTRIBUTORS.md), user or anyone providing a feedback
 
+
 ## License
 
     The MIT License (MIT)
-    Copyright © 2013 Thomas Parisot, https://oncletom.io
+    Copyright © 2014 Thomas Parisot, and contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the “Software”), to deal
