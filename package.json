@@ -1,7 +1,7 @@
 {
   "name": "grunt-crx",
   "description": "Package your Chrome Extensions in a bliss.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/oncletom/grunt-crx",
   "author": {
     "name": "oncletom",
@@ -38,8 +38,7 @@
     "blanket": {
       "pattern": "//grunt-crx/(tasks|lib)/"
     },
-    "travis-cov": {
-    }
+    "travis-cov": {}
   },
   "dependencies": {
     "async": "^0.9.0",
@@ -52,10 +51,9 @@
     "chai": "^1.10.0",
     "jshint": "^2.5.10",
     "jszip": "^2.4.0",
-    "mocha": "^2.0.1",
+    "mocha": "^1.21.4",
     "blanket": "^1.1.6",
     "grunt": "^0.4.0",
-    "mocha": "^1.21.4",
     "sinon": "^1.10.3",
     "travis-cov": "^0.2.5"
   },
