@@ -2,58 +2,70 @@
 "use strict";
 
 var grunt = require('grunt');
+var rm = require('rimraf');
+var mkdir = require('mkdirp');
 var path = require('path');
 var expect = require('chai').expect;
+var sinon = require('sinon');
 
 var extensionHelper = require(__dirname + '/../lib/crx.js').init(grunt);
-var autoupdateHelper = require(__dirname + '/../lib/autoupdate.js').init(grunt);
+var autoupdateHelper = require(__dirname + '/../lib/autoupdate.js').init();
+var getTaskConfig = require('./helpers')(grunt).getTaskConfig;
 
 describe('lib/autoupdate', function(){
-  var extensionConfigs;
+  var sandbox = sinon.sandbox.create();
 
-  beforeEach(function(){
-    extensionConfigs = {
-      "standard": extensionHelper.getTaskConfiguration('test-standard'),
-      "codebase": extensionHelper.getTaskConfiguration('test-codebase'),
-      "exclude": extensionHelper.getTaskConfiguration('test-exclude')
-    };
-  });
-
-  afterEach(function(){
-    if (grunt.file.exists("test/data/files/")) {
-      grunt.file.delete("test/data/files/");
-    }
-  });
-
-  it('should not write an autoupdate XML file without codebase and without update_url', function(done){
-    var crx = extensionHelper.createObject(extensionConfigs.standard);
-    crx.manifest.update_url = null;
-
-    autoupdateHelper.buildXML(crx, function(){
-      expect(grunt.file.expand('test/data/files/updates.xml')).to.be.empty;
-
-      done();
+  before(function(){
+    grunt.config.init({
+      crx: {
+        "standard": extensionHelper.getTaskConfiguration('test-standard'),
+        "codebase": extensionHelper.getTaskConfiguration('test-codebase'),
+        "exclude": extensionHelper.getTaskConfiguration('test-exclude')
+      }
     });
   });
 
-  it('should not write an autoupadte XML file with codebase and without update_url', function(done){
-    var crx = extensionHelper.createObject(extensionConfigs.codebase);
-    crx.manifest.update_url = null;
+  afterEach(function (done) {
+    var filepath = path.join(__dirname, 'data', 'files');
 
-    autoupdateHelper.buildXML(crx, function(){
-      expect(grunt.file.expand('test/data/files/updates.xml')).to.be.empty;
+    rm(filepath, mkdir.bind(null, filepath, done));
 
-      done();
-    });
+    sandbox.restore();
   });
 
-  it('should build an autoupdate XML file with codebase and with update_url', function(done){
-    var crx = extensionHelper.createObject(extensionConfigs.codebase);
+  describe('buildXML', function(){
+    it('should generate an autoupdate file without codebase, without update_url', function(done){
+      var crx = extensionHelper.createObject(getTaskConfig('standard'));
 
-    autoupdateHelper.buildXML(crx, function(){
-      expect(grunt.file.expand('test/data/files/updates.xml')).to.have.length.of(1);
+      sandbox.stub(crx.manifest, 'update_url', null);
 
-      done();
+      autoupdateHelper.buildXML(crx, function () {
+        expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
+
+        done();
+      });
+    });
+
+    it('should generate an autoupdate file with codebase, without update_url', function(done){
+      var crx = extensionHelper.createObject(getTaskConfig('codebase'));
+
+      sandbox.stub(crx.manifest, 'update_url', null);
+
+      autoupdateHelper.buildXML(crx, function () {
+        expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
+
+        done();
+      });
+    });
+
+    it('should generate an autoupdate file with codebase, with update_url', function(done){
+      var crx = extensionHelper.createObject(getTaskConfig('codebase'));
+
+      autoupdateHelper.buildXML(crx, function () {
+        expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(1);
+
+        done();
+      });
     });
   });
 });

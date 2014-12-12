@@ -1,5 +1,10 @@
 ## Release History
 
+### 1.0.0 (10/??/2014)
+
+* more async
+* grunt files config compliance
+
 ### 0.3.2 (08/02/2013)
 
 * removed dependency on `rm` system command ([#27](https://github.com/oncletom/grunt-crx/pull/27))

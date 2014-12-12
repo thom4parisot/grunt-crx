@@ -1,15 +1,14 @@
-# grunt-crx
+# grunt-crx [![Build Status](https://secure.travis-ci.org/oncletom/grunt-crx.svg?branch=master)](http://travis-ci.org/oncletom/grunt-crx)
 
-[![Build Status](https://secure.travis-ci.org/oncletom/grunt-crx.svg?branch=master)](http://travis-ci.org/oncletom/grunt-crx)
-[![Dependencies Status](https://david-dm.org/oncletom/grunt-crx.svg)](https://david-dm.org/oncletom/grunt-crx)
-[![Dev Dependencies Status](https://david-dm.org/oncletom/grunt-crx/dev-status.svg)](https://david-dm.org/oncletom/grunt-crx#info=devDependencies)
+`grunt-crx` is a Grunt task used to **package Chrome Extensions**.
 
-`grunt-crx` is a Grunt task used to **package private Chrome Extensions**.
+Chrome extensions can either be:
 
-In the **future**, this task will also help you to also package
-[Packaged Apps](http://developer.chrome.com/apps/), *Hosted Apps*, and public Chrome Extensions to publish on the [Chrome Web Store](https://chrome.google.com/webstore/).
+- **public**: *zip* files are uploaded on the [Chrome Web Store](https://chrome.google.com/webstore/));
+- **private**: *crx* files are signed with a private key and self-hosted.
 
 ## Getting Started
+
 Install this grunt plugin next to your project's [Gruntfile.js](http://gruntjs.com/getting-started) with the following command:
 
 ```bash
@@ -22,33 +21,21 @@ Then add this line to your project's `Gruntfile.js`:
 grunt.loadNpmTasks('grunt-crx');
 ```
 
-## Dependencies
-
-* `openssl` - Used to sign your Chrome extensions
-  * Linux: `sudo apt-get install openssl`
-  * OS X: Should already exist
-  * Windows: [openssl.org/related/binaries.html](http://www.openssl.org/related/binaries.html)
-* `ssh-keygen` - Used to generate new signatures
-  * Linux and OS X: Should already exist
-  * Windows: Comes with git, if you have `<git install location>/bin` in your `PATH` you should be set
-
-
 ## Documentation
 
 This task is a [multi task](http://gruntjs.com/creating-tasks#multi-tasks), meaning that grunt will automatically iterate over all `crx` targets if a target is not specified.
 
 There will be as many extension packaged as there are targets.
 
-### Target Properties
+### Target Options
 
-* `src` (string, _mandatory_): location of a folder containing a Chrome Extension `manifest.json`;
+* `src` (_mandatory_): ;
 * `dest` (string, _mandatory_): location of a folder where the `crx` file will be available;
-* `baseURL` (string): folder URL where package files will be self hosted ([see Autoupdating in Chrome Extension docs](http://developer.chrome.com/extensions/autoupdate.html));
-* `exclude` (array): array of [glob style](http://gruntjs.com/api/grunt.file#globbing-patterns) `src`-relative paths which won't be included in the built package;
-* `privateKey` (string): location of the `.pem` file used to encrypt your extension;
 * `zipDest` (string): Optional location of a folder to write the `zip` archive (unsigned extension package) will be available;
 * `options` (object) – options that are directly provided to the `ChromeExtension` object;
- * `maxBuffer` (Number): amount of bytes available to package the extension ([see child_process#exec](http://nodejs.org/docs/latest/api/child_process.html#child_process_child_process_exec_command_options_callback))
+ * `baseURL` (string): folder URL where package files will be self hosted ([see Autoupdating in Chrome Extension docs](http://developer.chrome.com/extensions/autoupdate.html));
+ * `maxBuffer` (Number): amount of bytes available to package the extension ([see child_process#exec](http://nodejs.org/docs/latest/api/child_process.html#child_process_child_process_exec_command_options_callback));
+ * `privateKey` (string): location of the `.pem` file used to encrypt your extension.
 
 ### Target Defaults
 
@@ -58,14 +45,11 @@ There will be as many extension packaged as there are targets.
 
 ## Configuration Examples
 
-```javascript
-//Gruntfile.js
-grunt.loadNpmTasks('grunt-crx');
-
+```js
 grunt.initConfig({
   crx: {
     myPublicPackage: {
-      "src": "src/",
+      "src": "src/**/*",
       "dest": "dist/crx/",
     }
   }
@@ -77,19 +61,18 @@ grunt.initConfig({
 This example demonstrates how you can tweak your builds upon your own
 source architecture.
 
-```javascript
-//Gruntfile.js
-grunt.loadNpmTasks('grunt-crx');
-
+```js
 grunt.initConfig({
   crx: {
     myHostedPackage: {
-      "src": "src-beta/",
+      "src": [
+        "src-beta/**/*",
+        "!.{git,svn}"
+      ],
       "dest": "dist/crx-beta/src/my-extension.crx",
-      "baseURL": "http://my.app.net/files/",
-      "exclude": [ ".git", ".svn" ],
-      "privateKey": "~/.ssh/chrome-apps.pem",
       "options": {
+        "baseURL": "http://my.app.net/files/",
+        "privateKey": "~/.ssh/chrome-apps.pem",
         "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
       }
     }
@@ -105,32 +88,36 @@ within a same repository location.
 Pretty handy to use a Git workflow and pre-release code before deploying it
 in production.
 
-```javascript
-//Gruntfile.js
-grunt.loadNpmTasks('grunt-crx');
-
+```js
 grunt.initConfig({
   pkg: grunt.file.readJSON('package.json'),
   manifest: grunt.file.readJSON('src/manifest.json'),
   crx: {
     staging: {
-      "src": "src/",
+      "src": [
+        "src/**/*",
+        "!.{git,svn}",
+        "!*.pem"
+      ]
       "dest": "dist/staging/src/<%= pkg.name %>-<%= manifest.version %>-dev.crx",
-      "baseURL": "http://my.app.intranet/files/",
-      "filename": "",
-      "exclude": [ ".git", ".svn", "*.pem" ],
-      "privateKey": "dist/key.pem",
       "options": {
+        "baseURL": "http://my.app.intranet/files/",
+        "filename": "",
+        "privateKey": "dist/key.pem",
         "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
       }
     },
     production: {
-      "src": "src/",
+      "src": [
+        "src/**/*",
+        "!.{git,svn}",
+        "!*.pem",
+        "!dev/**"
+      ],
       "dest": "dist/production/src/<%= pkg.name %>-<%= manifest.version %>-dev.crx",
       "zipDest": "dist/production/src/<%= pkg.name %>-<%= manifest.version %>-dev.zip",
-      "baseURL": "http://my.app.net/files/",
-      "exclude": [ ".git", ".svn", "dev/**", "*.pem" ],
       "options": {
+	      "baseURL": "http://my.app.net/files/",
         "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
       }
     }
@@ -161,10 +148,11 @@ Take any contribution as an opportunity to learn.
 * [Grunt authors](http://gruntjs.com) for this great toolbox
 * [**you**, contributor](CONTRIBUTORS.md), user or anyone providing a feedback
 
+
 ## License
 
     The MIT License (MIT)
-    Copyright © 2013 Thomas Parisot, https://oncletom.io
+    Copyright © 2014 Thomas Parisot, and contributors
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the “Software”), to deal

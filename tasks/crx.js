@@ -8,19 +8,23 @@
 
 "use strict";
 
+var async = require('async');
+
 module.exports = function(grunt) {
   var extensionHelper = require('./../lib/crx').init(grunt);
-  var autoupdateHelper = require('./../lib/autoupdate').init(grunt);
+  var autoupdateHelper = require('./../lib/autoupdate').init();
 
   grunt.registerMultiTask('crx', 'Package Chrome Extensions, the simple way.', function() {
     var done = this.async();
     var defaults = extensionHelper.getTaskConfiguration();
 
+    grunt.config.requires('src', 'dest');
+
     this.files.forEach(function(taskConfig) {
       var extension = extensionHelper.createObject(taskConfig, defaults);
 
       // Building
-      grunt.util.async.series([
+      async.series([
         // Building extension
         function(callback){
           extensionHelper.build(extension, callback);

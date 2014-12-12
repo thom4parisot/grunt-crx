@@ -1,11 +1,11 @@
 {
   "name": "grunt-crx",
   "description": "Package your Chrome Extensions in a bliss.",
-  "version": "0.3.4",
+  "version": "1.0.0",
   "homepage": "https://github.com/oncletom/grunt-crx",
   "author": {
     "name": "oncletom",
-    "email": "thomas@oncle-tom.net",
+    "email": "hi@oncletom.io",
     "url": "https://oncletom.io"
   },
   "repository": {
@@ -24,21 +24,40 @@
   "main": "Gruntfile.js",
   "bin": "bin/grunt-crx",
   "engines": {
-    "node": ">= 0.8.0"
+    "node": ">= 0.8.0 < 0.11.0",
+    "npm": ">= 1.4.6"
   },
   "scripts": {
-    "test": "jshint -c .jshintrc lib/* tasks/* && mocha --reporter list",
-    "test-fast": "mocha --reporter list"
+    "test": "npm run lint && npm run unit-tests && npm run coverage",
+    "lint": "jshint {lib,tasks}/*.js",
+    "unit-tests": "mocha -R dot test/*.js",
+    "coverage-tests": "mocha -R travis-cov -r blanket test/*.js",
+    "coverage": "mocha -R html-cov -r blanket test/*.js > coverage.html"
+  },
+  "config": {
+    "blanket": {
+      "pattern": "//grunt-crx/(tasks|lib)/"
+    },
+    "travis-cov": {
+    }
   },
   "dependencies": {
-    "crx": "~2.0.0"
+    "async": "^0.9.0",
+    "crx": "^2.0.0",
+    "lodash": "^2.4.1",
+    "rimraf": "^2.2.8",
+    "mkdirp": "^0.5.0"
   },
   "devDependencies": {
     "chai": "^1.10.0",
-    "grunt": "~0.4.0",
     "jshint": "^2.5.10",
     "jszip": "^2.4.0",
-    "mocha": "^2.0.1"
+    "mocha": "^2.0.1",
+    "blanket": "^1.1.6",
+    "grunt": "^0.4.0",
+    "mocha": "^1.21.4",
+    "sinon": "^1.10.3",
+    "travis-cov": "^0.2.5"
   },
   "keywords": [
     "gruntplugin",
