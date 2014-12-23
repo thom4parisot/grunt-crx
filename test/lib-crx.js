@@ -41,7 +41,6 @@ describe('lib/crx', function(){
         expect(grunt.file.expand('test/data/files/' + dynamicFilename)).to.have.lengthOf(0);
         expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
 
-        crx.destroy();
         done();
       });
     });
@@ -54,7 +53,6 @@ describe('lib/crx', function(){
         expect(grunt.file.expand('test/data/files/' + dynamicFilename)).to.have.lengthOf(1);
         expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
 
-        crx.destroy();
         done();
       });
     });
@@ -71,7 +69,6 @@ describe('lib/crx', function(){
         expect(grunt.file.expand(path.join(crx.path + '/stuff/*'))).to.have.lengthOf(0);
         expect(grunt.file.expand(path.join(crx.path + '/*'))).to.have.lengthOf(4);
 
-        crx.destroy();
         done();
       });
     });
@@ -89,7 +86,6 @@ describe('lib/crx', function(){
       jsZipFile.load(fs.readFileSync(dest));
 
       expect(jsZipFile.file('manifest.json')).to.be.ok;
-      crx.destroy();
       done();
     });
   });
