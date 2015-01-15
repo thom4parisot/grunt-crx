@@ -9,6 +9,7 @@
 "use strict";
 
 var async = require('async');
+var _ = require('lodash');
 
 module.exports = function(grunt) {
   var extensionHelper = require('./../lib/crx').init(grunt);
@@ -20,7 +21,11 @@ module.exports = function(grunt) {
 
     this.requiresConfig('crx');
 
+    var options = this.data.options;
     this.files.forEach(function(taskConfig) {
+      if (options) {
+        taskConfig.options = _.extend(options, taskConfig.options || {});
+      }
       var extension = extensionHelper.createObject(taskConfig, defaults);
 
       // Building

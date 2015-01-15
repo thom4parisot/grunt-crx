@@ -89,4 +89,22 @@ describe('lib/crx', function(){
       done();
     });
   });
+
+  it('should work with a real-world grunt-crx run', function (done) {
+
+    // load the task as if done by grunt
+    var task = require('../tasks/crx.js');
+    task(grunt);
+
+    grunt.option('options.silently', true);
+
+    // run it as if done by grunt (just no log output)
+    grunt.log.muted = true;
+    grunt.tasks(['crx:standard'], {}, function() {
+      expect(grunt.file.expand('test/data/files/test.crx')).to.have.lengthOf(1);
+      grunt.log.muted = false;
+      done();
+    });
+
+  });
 });
