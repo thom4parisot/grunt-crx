@@ -35,8 +35,6 @@ module.exports = function(grunt) {
         },
         // Clearing stuff
         function(callback){
-          extension.destroy();
-
           callback();
         }
       ], /* Baking done! */ done);
