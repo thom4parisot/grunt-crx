@@ -117,7 +117,7 @@ grunt.initConfig({
       "dest": "dist/production/src/<%= pkg.name %>-<%= manifest.version %>-dev.crx",
       "zipDest": "dist/production/src/<%= pkg.name %>-<%= manifest.version %>-dev.zip",
       "options": {
-	      "baseURL": "http://my.app.net/files/",
+        "baseURL": "http://my.app.net/files/",
         "maxBuffer": 3000 * 1024 //build extension with a weight up to 3MB
       }
     }
