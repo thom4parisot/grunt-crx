@@ -21,6 +21,12 @@ Then add this line to your project's `Gruntfile.js`:
 grunt.loadNpmTasks('grunt-crx');
 ```
 
+Note: v0.3.4 has been tagged as the latest version to avoid security issues in packaged extensions. See [issue #44](https://github.com/oncletom/grunt-crx/issues/44). If you want to use the most recent version which corresponds to the following documentation, you can install it specifically: 
+
+```bash
+npm install --save-dev grunt-crx@1.0.3
+```
+
 ## Documentation
 
 This task is a [multi task](http://gruntjs.com/creating-tasks#multi-tasks), meaning that grunt will automatically iterate over all `crx` targets if a target is not specified.
