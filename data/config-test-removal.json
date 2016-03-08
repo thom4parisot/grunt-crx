@@ -1,0 +1,12 @@
+{
+  "src": [
+    "test/data/src/stuff/awesome.txt",
+    "test/data/src/blah/*",
+    "test/data/src/manifest.json"
+  ],
+  "dest": "test/data/files/test.crx",
+  "zipDest": "test/data/files/test.zip",
+  "options": {
+    "privateKey": "test/data/key.pem"
+  }
+}
