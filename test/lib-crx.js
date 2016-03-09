@@ -74,7 +74,7 @@ describe('lib/crx', function(){
       });
     });
 
-    it.only('should not remove entire directories', function(done) {
+    it('should not remove entire directories', function(done) {
       var crx = extensionHelper.createObject(getTaskConfig('removal'));
       //console.log(crx);
 
