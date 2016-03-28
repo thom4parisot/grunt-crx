@@ -98,7 +98,7 @@ grunt.initConfig({
         "src/**/*",
         "!.{git,svn}",
         "!*.pem"
-      ]
+      ],
       "dest": "dist/staging/src/<%= pkg.name %>-<%= manifest.version %>-dev.crx",
       "options": {
         "baseURL": "http://my.app.intranet/files/",
