@@ -1,23 +1,15 @@
 language: node_js
 node_js:
-  - '0.8'
   - '0.10'
-  - '0.11'
-  - 'iojs-v1.0'
-  - 'iojs-v1.1'
+  - 'iojs'
   - '0.12'
-  - '4.1'
-  - '5.0'
+  - v4
+  - v5
+  - v6
+  - node
 
 sudo: false
 
-before_install:
-- npm install -g npm@1.4.6
-
 script:
 - npm test
-- npm run coverage-tests
-
-matrix:
-  allow_failures:
-  - node_js: "0.11"
+- npm run test-coverage-ci

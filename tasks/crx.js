@@ -17,26 +17,24 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('crx', 'Package Chrome Extensions, the simple way.', function() {
     var done = this.async();
-    var defaults = extensionHelper.getTaskConfiguration();
+    var self = this;
 
     this.requiresConfig('crx');
 
-    var options = this.data.options;
     this.files.forEach(function(taskConfig) {
-      if (options) {
-        taskConfig.options = _.extend(options, taskConfig.options || {});
-      }
-      var extension = extensionHelper.createObject(taskConfig, defaults);
+      var extension = extensionHelper.createObject(taskConfig, {
+	options: self.options()
+      });
 
       // Building
       async.series([
         // Building extension
         function(callback){
-          extensionHelper.build(extension, callback);
+	  extensionHelper.build(taskConfig, extension, callback);
         },
-        // Building manifest
+	// // Building manifest
         function(callback){
-          autoupdateHelper.buildXML(extension, callback);
+	  autoupdateHelper.buildXML(taskConfig, extension, callback);
         },
         // Clearing stuff
         function(callback){

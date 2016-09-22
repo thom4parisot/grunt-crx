@@ -5,6 +5,6 @@
     "appid": null,
     "baseURL": null,
     "maxBuffer": null,
-    "privateKey": "key.pem"
+    "privateKey": null
   }
 }

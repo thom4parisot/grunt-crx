@@ -29,10 +29,10 @@
     "npm": ">= 1.4.6"
   },
   "scripts": {
-    "test": "npm run lint && npm run unit-tests && npm run coverage",
+    "test": "mocha -R dot test/*.js",
+    "posttest": "npm run coverage && npm run lint",
     "lint": "jshint {lib,tasks}/*.js",
-    "unit-tests": "mocha -R dot test/*.js",
-    "coverage-tests": "mocha -R travis-cov -r blanket test/*.js",
+    "test-coverage-ci": "mocha -R travis-cov -r blanket test/*.js",
     "coverage": "mocha -R html-cov -r blanket test/*.js > coverage.html"
   },
   "config": {

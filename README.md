@@ -7,6 +7,8 @@ Chrome extensions can either be:
 - **public**: *zip* files are uploaded on the [Chrome Web Store](https://chrome.google.com/webstore/));
 - **private**: *crx* files are signed with a private key and self-hosted.
 
+**Compatibility**: this extension is compatible with `node>=0.10`.
+
 ## Getting Started
 
 Install this grunt plugin next to your project's [Gruntfile.js](http://gruntjs.com/getting-started) with the following command:
