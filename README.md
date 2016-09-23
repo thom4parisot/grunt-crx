@@ -1,11 +1,11 @@
 # grunt-crx [![Build Status](https://secure.travis-ci.org/oncletom/grunt-crx.svg?branch=master)](http://travis-ci.org/oncletom/grunt-crx)
 
-`grunt-crx` is a Grunt task used to **package Chrome Extensions**.
+`grunt-crx` is a Grunt task used to **package Chrome Extensions** (and soon, [WebExtensions](https://developer.mozilla.org/en-US/Add-ons/WebExtensions)).
 
 Chrome extensions can either be:
 
-- **public**: *zip* files are uploaded on the [Chrome Web Store](https://chrome.google.com/webstore/));
-- **private**: *crx* files are signed with a private key and self-hosted.
+- **public**: *zip* files to be uploaded on the [Chrome Web Store](https://chrome.google.com/webstore/);
+- **private**: *crx* files to be signed with a private key and eventually self-hosted.
 
 **Compatibility**: this extension is compatible with `node>=0.10`.
 
@@ -29,15 +29,13 @@ grunt.loadNpmTasks('grunt-crx');
 
 This task is a [multi task](http://gruntjs.com/creating-tasks#multi-tasks), meaning that grunt will automatically iterate over all `crx` targets if a target is not specified.
 
-There will be as many extension packaged as there are targets.
-
 ## Target Options
 
 * `src` (_mandatory_): ;
 * `dest` (string, _mandatory_): the filepath of your `.crx` or `.zip` archive;
 * `options` (object) – options that are directly provided to the `ChromeExtension` object;
- * `baseURL` (string): folder URL where package files will be self hosted ([see Autoupdating in Chrome Extension docs](http://developer.chrome.com/extensions/autoupdate.html));
- * `maxBuffer` (Number): amount of bytes available to package the extension ([see child_process#exec](http://nodejs.org/docs/latest/api/child_process.html#child_process_child_process_exec_command_options_callback));
+ * `baseURL` (string): folder URL where package files will be self hosted ([see Autoupdating in Chrome Extension docs](https://developer.chrome.com/extensions/autoupdate));
+ * `maxBuffer` (Number): amount of bytes available to package the extension ([see child_process#exec](https://nodejs.org/docs/latest/api/child_process.html#child_process_child_process_exec_command_options_callback));
  * `privateKey` (string): location of the `.pem` file used to sign your `crx` extension.
 
 # Configuration Examples
@@ -76,7 +74,7 @@ grunt.initConfig({
       ],
       "dest": "dist/crx-beta/src/my-extension.crx",
       "options": {
-        "baseURL": "http://my.app.net/files/",
+        "baseURL": "https://my.app.net/files/",
         "privateKey": "~/.ssh/chrome-apps.pem"
       }
     }
@@ -110,7 +108,7 @@ grunt.initConfig({
       ],
       "dest": "dist/staging/<%= pkg.name %>-<%= manifest.version %>-dev.crx",
       "options": {
-        "baseURL": "http://my.app.intranet/files/"
+        "baseURL": "https://my.app.intranet/files/"
       }
     },
     production: {
@@ -129,7 +127,7 @@ grunt.initConfig({
         ]
       },
       "options": {
-        "baseURL": "http://my.app.net/files/",
+        "baseURL": "https://my.app.net/files/",
       }
     }
   }
@@ -141,7 +139,7 @@ grunt.initConfig({
 It is strongly recommended to store your privates keys (`.pem` files) **outside**
 the source folder of your extensions.
 
-Although `grunt-crx` will exclude by default because [we do not want this story](http://it.slashdot.org/story/12/05/24/1717219/yahoo-includes-private-key-in-source-file-for-axis-chrome-extension) to happen to you.
+Although `grunt-crx` will exclude by default because [we do not want this story](https://it.slashdot.org/story/12/05/24/1717219/yahoo-includes-private-key-in-source-file-for-axis-chrome-extension) to happen to you.
 
 
 # Upgrading
@@ -167,7 +165,7 @@ Take any contribution as an opportunity to learn.
 
 # Credits
 
-* [Jed Schmidt](http://who.jed.is) for the useful [crx](https://npmjs.com/crx) module
+* [Jed Schmidt](http://jed.is/) for the useful [crx](https://npmjs.com/crx) module
 * [Grunt authors](http://gruntjs.com) for this great toolbox
 * [**you**, contributor](CONTRIBUTORS.md), user or anyone providing a feedback
 

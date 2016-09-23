@@ -4,11 +4,7 @@
   "version": "1.0.4",
   "homepage": "https://github.com/oncletom/grunt-crx",
   "license": "MIT",
-  "author": {
-    "name": "oncletom",
-    "email": "hi@oncletom.io",
-    "url": "https://oncletom.io"
-  },
+  "author": "Thomas Parisot (https://oncletom.io)",
   "repository": {
     "type": "git",
     "url": "git://github.com/oncletom/grunt-crx.git"
@@ -25,8 +21,7 @@
   "main": "Gruntfile.js",
   "bin": "bin/grunt-crx",
   "engines": {
-    "node": ">= 0.8.0 < 0.11.0",
-    "npm": ">= 1.4.6"
+    "node": ">= 0.10.0",
   },
   "scripts": {
     "test": "nyc mocha -R dot test/*.js",
