@@ -21,7 +21,7 @@
   "main": "Gruntfile.js",
   "bin": "bin/grunt-crx",
   "engines": {
-    "node": ">= 0.10.0",
+    "node": ">= 0.10.0"
   },
   "scripts": {
     "test": "nyc mocha -R dot test/*.js",
