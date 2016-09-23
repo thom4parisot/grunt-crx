@@ -1,6 +1,6 @@
 {
   "src": "test/data/src/**/*",
-  "dest": "test/data/files/",
+  "dest": "test/data/files/test.crx",
   "options": {
     "codebase": "http://example.com/files/",
     "privateKey": "test/data/key.pem"

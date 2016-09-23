@@ -2,10 +2,7 @@
   "src": [
     "test/data/src/**/*",
     "!test/data/src/ignore.me",
-    "!test/data/src/{blah,stuff}/**/*"
+    "!test/data/src/{blah,stuff}/**"
   ],
-  "dest": "test/data/files/test.crx",
-  "options": {
-    "privateKey": "test/data/key.pem"
-  }
+  "dest": "test/data/files/test.zip"
 }

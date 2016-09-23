@@ -1,0 +1,11 @@
+{
+  "files": {
+    "test/data/files/<%= pkg.name %>-<%= pkg.version %>.crx": [
+      "test/data/src/**/*"
+    ]
+  },
+  "options": {
+    "codebase": "http://example.com/files/",
+    "privateKey": "test/data/key.pem"
+  }
+}
