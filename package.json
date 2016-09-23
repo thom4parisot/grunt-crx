@@ -45,7 +45,6 @@
     "es6-promise": "^3.0.0",
     "mkdirp": "^0.5.0",
     "os-homedir": "^1.0.1",
-    "rimraf": "^2.2.8",
     "xtend": "^4.0.1"
   },
   "devDependencies": {
@@ -55,6 +54,7 @@
     "jszip": "^2.4.0",
     "mocha": "^3.0.2",
     "nyc": "^8.3.0",
+    "rimraf": "^2.2.8",
     "sinon": "^1.10.3"
   },
   "keywords": [
