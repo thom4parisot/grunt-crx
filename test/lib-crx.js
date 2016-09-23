@@ -5,7 +5,6 @@ var grunt = require('grunt');
 var path = require('path');
 var rm = require('rimraf');
 var mkdir = require('mkdirp');
-var dynamicFilename = "grunt-crx-13.3.7.crx";
 var expect = require('chai').expect;
 var fs = require("fs");
 var JSZip = require("jszip");
@@ -16,8 +15,13 @@ var getTaskConfig = require('./helpers')(grunt).getTaskConfig;
 describe('lib/crx', function(){
   before(function(){
     grunt.config.init({
+      pkg: {
+	name: 'grunt-crx',
+	version: '13.3.7'
+      },
       crx: {
         "standard": extensionHelper.getTaskConfiguration('test-standard'),
+	"dynamic":  extensionHelper.getTaskConfiguration('test-dynamic'),
         "codebase": extensionHelper.getTaskConfiguration('test-codebase'),
         "exclude":  extensionHelper.getTaskConfiguration('test-exclude'),
         "edge":     extensionHelper.getTaskConfiguration('test-edge'),
@@ -33,65 +37,65 @@ describe('lib/crx', function(){
   });
 
   describe('build', function(){
-    it('should build without the codebase parameter', function(done){
-      var crx = extensionHelper.createObject(getTaskConfig('standard'));
+    it('should build without the codebase parameter', function(){
+      var config = getTaskConfig('standard');
+      var crx = extensionHelper.createObject(config);
 
-      extensionHelper.build(crx, function () {
+      return extensionHelper.build(config, crx).then(function () {
         expect(grunt.file.expand('test/data/files/test.crx')).to.have.lengthOf(1);
-        expect(grunt.file.expand('test/data/files/' + dynamicFilename)).to.have.lengthOf(0);
         expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
-
-        done();
       });
     });
 
-    it('should build with a codebase parameter', function(done){
-      var crx = extensionHelper.createObject(getTaskConfig('codebase'));
+    it('should build with a codebase parameter', function(){
+      var config = getTaskConfig('codebase');
+      var crx = extensionHelper.createObject(config);
 
-      extensionHelper.build(crx, function () {
-        expect(grunt.file.expand('test/data/files/test.crx')).to.have.lengthOf(0);
-        expect(grunt.file.expand('test/data/files/' + dynamicFilename)).to.have.lengthOf(1);
+      return extensionHelper.build(config, crx).then(function () {
+	expect(grunt.file.expand('test/data/files/test.crx')).to.have.lengthOf(1);
         expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
-
-        done();
       });
     });
 
-    it('should exclude files', function (done) {
-      var crx = extensionHelper.createObject(getTaskConfig('exclude'));
+    it('should use grunt built-in name expansion', function(){
+      var config = getTaskConfig('dynamic');
+      var crx = extensionHelper.createObject(config);
 
-      extensionHelper.build(crx, function () {
-        //local
-        expect(grunt.file.expand('test/data/src/stuff/*')).to.have.lengthOf(1);
-        expect(grunt.file.expand('test/data/src/*')).to.have.lengthOf(5);
+      return extensionHelper.build(config, crx).then(function () {
+	expect(grunt.file.expand('test/data/files/grunt-crx-13.3.7.crx')).to.have.lengthOf(1);
+      });
+    });
 
-        //copy
-        expect(grunt.file.expand(path.join(crx.path + '/stuff/*'))).to.have.lengthOf(0);
-        expect(grunt.file.expand(path.join(crx.path + '/*'))).to.have.lengthOf(4);
+    it('should exclude files', function () {
+      var config = getTaskConfig('exclude');
+      var crx = extensionHelper.createObject(config);
 
-        done();
+      return extensionHelper.build(config, crx).then(function () {
+	var jsZipFile = new JSZip();
+
+	jsZipFile.load(fs.readFileSync(config.dest));
+
+	expect(jsZipFile.files).to.have.all.keys(['manifest.json', 'background.html']);
       });
     });
   });
 
-  it('should archive a zip file if option is enabled', function (done) {
-    var crx = extensionHelper.createObject(getTaskConfig('archive'));
+  it('should archive a zip file if option is enabled', function () {
+    var config = getTaskConfig('archive');
+    var crx = extensionHelper.createObject(config);
 
-    extensionHelper.build(crx, function () {
+    return extensionHelper.build(config, crx).then(function (err) {
       var jsZipFile = new JSZip();
-      var dest = crx.zipDest;
 
-      expect(grunt.file.exists(dest), 'zip file should have been created').to.be.true;
+      expect(grunt.file.exists(config.dest), 'zip file should have been created').to.be.true;
 
-      jsZipFile.load(fs.readFileSync(dest));
+      jsZipFile.load(fs.readFileSync(config.dest));
 
       expect(jsZipFile.file('manifest.json')).to.be.ok;
-      done();
     });
   });
 
   it('should work with a real-world grunt-crx run', function (done) {
-
     // load the task as if done by grunt
     var task = require('../tasks/crx.js');
     task(grunt);

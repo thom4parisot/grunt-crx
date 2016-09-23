@@ -34,44 +34,38 @@ describe('lib/autoupdate', function(){
   });
 
   describe('buildXML', function(){
-    it('should generate an autoupdate file without codebase, without update_url', function(done){
+    it('should generate an autoupdate file without codebase, without update_url', function(){
       var config = getTaskConfig('standard');
 
-      extensionHelper.createObject(config).load(config.src).then(function(crx){
+      return extensionHelper.createObject(config).load(config.src).then(function(crx){
 	sandbox.stub(crx.manifest, 'update_url', null);
 
-	autoupdateHelper.buildXML(config, crx, function () {
+	return autoupdateHelper.buildXML(config, crx).then(function() {
 	  expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
-
-	  done();
 	});
-      }).catch(done);
+      })
     });
 
-    it('should generate an autoupdate file with codebase, without update_url', function(done){
+    it('should generate an autoupdate file with codebase, without update_url', function(){
       var config = getTaskConfig('codebase');
 
-      extensionHelper.createObject(config).load(config.src).then(function(crx){
+      return extensionHelper.createObject(config).load(config.src).then(function(crx){
 	sandbox.stub(crx.manifest, 'update_url', null);
 
-	autoupdateHelper.buildXML(config, crx, function () {
+	return autoupdateHelper.buildXML(config, crx).then(function() {
 	  expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
-
-	  done();
 	});
-      }).catch(done);
+      });
     });
 
-    it('should generate an autoupdate file with codebase, with update_url', function(done){
+    it('should generate an autoupdate file with codebase, with update_url', function(){
       var config = getTaskConfig('codebase');
 
-      extensionHelper.createObject(config).load(config.src).then(function(crx){
-	autoupdateHelper.buildXML(config, crx, function () {
+      return extensionHelper.createObject(config).load(config.src).then(function(crx){
+	return autoupdateHelper.buildXML(config, crx).then(function() {
 	  expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(1);
-
-	  done();
 	});
-      }).catch(done);
+      });
     });
   });
 });
