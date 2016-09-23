@@ -1,7 +1,7 @@
 {
   "name": "grunt-crx",
   "description": "Package your Chrome Extensions in a bliss.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "homepage": "https://github.com/oncletom/grunt-crx",
   "license": "MIT",
   "author": "Thomas Parisot (https://oncletom.io)",
