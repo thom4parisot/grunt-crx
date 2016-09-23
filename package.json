@@ -31,7 +31,7 @@
   "scripts": {
     "test": "nyc mocha -R dot test/*.js",
     "posttest": "npm run lint",
-    "lint": "jshint {lib,tasks}/*.js",
+    "lint": "jshint ./lib ./tasks",
     "coverage": "mocha -R html-cov -r blanket test/*.js > coverage.html"
   },
   "nyc": {
