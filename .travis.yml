@@ -1,23 +1,18 @@
 language: node_js
 node_js:
-  - '0.8'
-  - '0.10'
-  - '0.11'
-  - 'iojs-v1.0'
-  - 'iojs-v1.1'
-  - '0.12'
-  - '4.1'
-  - '5.0'
-
+- '0.10'
+- iojs
+- '0.12'
+- v4
+- v5
+- v6
+- node
 sudo: false
-
-before_install:
-- npm install -g npm@1.4.6
-
-script:
-- npm test
-- npm run coverage-tests
-
-matrix:
-  allow_failures:
-  - node_js: "0.11"
+deploy:
+  provider: npm
+  email: hi@oncletom.io
+  api_key:
+    secure: tRMsY+YmzoYguD1BkcsIWHSt0j/Q6U2rt7Hu1TjNiYz7S7zf9drbStvnrpKOCCzvExIOg73zrIEVOgXPCPAnzSt2nc3mJT36NY4qLihC2YnZSEpdh22pjmqz8bBaiMkcZWDhhugbfCGL8lBR9IzZQCeUVPcf13ANDeOWcuUsggw=
+  on:
+    tags: true
+    repo: oncletom/grunt-crx

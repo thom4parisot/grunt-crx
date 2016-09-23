@@ -34,37 +34,37 @@ describe('lib/autoupdate', function(){
   });
 
   describe('buildXML', function(){
-    it('should generate an autoupdate file without codebase, without update_url', function(done){
-      var crx = extensionHelper.createObject(getTaskConfig('standard'));
+    it('should generate an autoupdate file without codebase, without update_url', function(){
+      var config = getTaskConfig('standard');
 
-      sandbox.stub(crx.manifest, 'update_url', null);
+      return extensionHelper.createObject(config).load(config.src).then(function(crx){
+	sandbox.stub(crx.manifest, 'update_url', null);
 
-      autoupdateHelper.buildXML(crx, function () {
-        expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
+	return autoupdateHelper.buildXML(config, crx).then(function() {
+	  expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
+	});
+      })
+    });
 
-        done();
+    it('should generate an autoupdate file with codebase, without update_url', function(){
+      var config = getTaskConfig('codebase');
+
+      return extensionHelper.createObject(config).load(config.src).then(function(crx){
+	sandbox.stub(crx.manifest, 'update_url', null);
+
+	return autoupdateHelper.buildXML(config, crx).then(function() {
+	  expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
+	});
       });
     });
 
-    it('should generate an autoupdate file with codebase, without update_url', function(done){
-      var crx = extensionHelper.createObject(getTaskConfig('codebase'));
+    it('should generate an autoupdate file with codebase, with update_url', function(){
+      var config = getTaskConfig('codebase');
 
-      sandbox.stub(crx.manifest, 'update_url', null);
-
-      autoupdateHelper.buildXML(crx, function () {
-        expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(0);
-
-        done();
-      });
-    });
-
-    it('should generate an autoupdate file with codebase, with update_url', function(done){
-      var crx = extensionHelper.createObject(getTaskConfig('codebase'));
-
-      autoupdateHelper.buildXML(crx, function () {
-        expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(1);
-
-        done();
+      return extensionHelper.createObject(config).load(config.src).then(function(crx){
+	return autoupdateHelper.buildXML(config, crx).then(function() {
+	  expect(grunt.file.expand('test/data/files/updates.xml')).to.have.lengthOf(1);
+	});
       });
     });
   });

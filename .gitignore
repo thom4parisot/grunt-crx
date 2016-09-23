@@ -1,5 +1,6 @@
 node_modules
 test/data/files
 tmp
-coverage.html
+coverage
+.nyc_output
 *.log

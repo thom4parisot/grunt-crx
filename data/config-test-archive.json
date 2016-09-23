@@ -5,8 +5,7 @@
     "test/data/stuff/*",
     "test/data/blah"
   ],
-  "dest": "test/data/files/test.crx",
-  "zipDest": "test/data/files/test.zip",
+  "dest": "test/data/files/test.zip",
   "options": {
     "privateKey": "test/data/key.pem"
   }
