@@ -1,5 +1,12 @@
 ## Release History
 
+### 2.0.0 (17/05/2019)
+
+* requires Node.js v12
+* uses `crx@5` and `grunt@1`
+* removed dependencies in favour of native Node.js features
+* cleaned up the codebase with `prettier`
+
 ### 1.0.0 (10/??/2014)
 
 * more async
