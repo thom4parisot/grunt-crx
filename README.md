@@ -7,7 +7,7 @@ Chrome extensions can either be:
 - **public**: *zip* files to be uploaded on the [Chrome Web Store](https://chrome.google.com/webstore/);
 - **private**: *crx* files to be signed with a private key and eventually self-hosted.
 
-**Compatibility**: this extension is compatible with `node>=0.10`.
+**Compatibility**: this extension is compatible with `node>12`.
 
 **Migrating from `grunt-crx<1.0.4`**? Please head to the [Upgrading section](#upgrading).
 
