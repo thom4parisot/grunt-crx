@@ -3,8 +3,9 @@
 
 var grunt = require('grunt');
 var path = require('path');
-var rm = require('rimraf');
-var mkdir = require('mkdirp');
+var promisify = require('util').promisify;
+var rm = promisify(require('rimraf'));
+var mkdir = require('fs').promises.mkdir;
 var expect = require('chai').expect;
 var fs = require("fs");
 var JSZip = require("jszip");
@@ -33,7 +34,9 @@ describe('lib/crx', function(){
   afterEach(function (done) {
     var filepath = path.join(__dirname, 'data', 'files');
 
-    rm(filepath, mkdir.bind(null, filepath, done));
+    rm(filepath)
+      .then(() => mkdir(filepath))
+      .then(() => done());
   });
 
   describe('build', function(){

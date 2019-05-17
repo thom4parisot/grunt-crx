@@ -21,12 +21,12 @@
   "main": "Gruntfile.js",
   "bin": "bin/grunt-crx",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 12.0.0"
   },
   "scripts": {
     "test": "nyc mocha -R dot test/*.js",
     "posttest": "npm run lint",
-    "lint": "jshint ./lib ./tasks",
+    "lint": "eslint ./lib ./tasks",
     "coverage": "mocha -R html-cov -r blanket test/*.js > coverage.html"
   },
   "nyc": {
@@ -37,15 +37,12 @@
   },
   "dependencies": {
     "crx": "^5.0.0",
-    "es6-promise": "^3.0.0",
-    "mkdirp": "^0.5.0",
-    "os-homedir": "^1.0.1",
     "xtend": "^4.0.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "eslint": "^5.16.0",
     "grunt": "^0.4.0",
-    "jshint": "^2.5.10",
     "jszip": "^2.4.0",
     "mocha": "^3.0.2",
     "nyc": "^8.3.0",

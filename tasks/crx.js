@@ -9,28 +9,29 @@
 "use strict";
 
 module.exports = function(grunt) {
-  var extensionHelper = require('./../lib/crx').init(grunt);
-  var autoupdateHelper = require('./../lib/autoupdate').init();
+  var extensionHelper = require("./../lib/crx").init(grunt);
+  var autoupdateHelper = require("./../lib/autoupdate").init();
 
-  grunt.registerMultiTask('crx', 'Package Chrome Extensions, the simple way.', function() {
-    var done = this.async();
-    var self = this;
+  grunt.registerMultiTask(
+    "crx",
+    "Package Chrome Extensions, the simple way.",
+    function() {
+      var done = this.async();
+      var self = this;
 
-    this.requiresConfig('crx');
+      this.requiresConfig("crx");
 
-    this.files.forEach(function(taskConfig) {
-      var extension = extensionHelper.createObject(taskConfig, {
-	options: self.options()
+      this.files.forEach(function(taskConfig) {
+        var extension = extensionHelper.createObject(taskConfig, {
+          options: self.options()
+        });
+
+        // Building
+        extensionHelper.build(taskConfig, extension)
+          .then(() => autoupdateHelper.buildXML(taskConfig, extension))
+          .then(() => done())
+          .catch(done);
       });
-
-      // Building
-      extensionHelper.build(taskConfig, extension)
-	.then(function(){
-	  return autoupdateHelper.buildXML(taskConfig, extension);
-	})
-	.then(function(){ done(); })
-	.catch(done);
-    });
-
-  });
+    }
+  );
 };
