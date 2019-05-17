@@ -2,7 +2,7 @@ language: node_js
 dist: xenial
 os:
 - linux
-- windows
+# - windows
 node_js:
 - v12
 - node
