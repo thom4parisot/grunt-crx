@@ -40,14 +40,14 @@
     "xtend": "^4.0.1"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
+    "chai": "^4.2.0",
     "eslint": "^5.16.0",
-    "grunt": "^0.4.0",
-    "jszip": "^2.4.0",
-    "mocha": "^3.0.2",
+    "grunt": "^1.0.4",
+    "jszip": "^3.2.1",
+    "mocha": "^6.1.4",
     "nyc": "^8.3.0",
-    "rimraf": "^2.2.8",
-    "sinon": "^1.10.3"
+    "rimraf": "^2.6.3",
+    "sinon": "^7.3.2"
   },
   "keywords": [
     "gruntplugin",
